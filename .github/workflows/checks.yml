@@ -1,0 +1,76 @@
+name: Frontend and browser checks
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: frontend
+      - uses: actions/checkout@v4
+        with:
+          repository: Fealserg/got-a-topic-backend
+          path: backend
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: |
+          cd frontend && npm ci
+          cd ../backend && pip install -r requirements.lock
+      - name: Verify shared API contract
+        run: cmp frontend/docs/openapi.json backend/docs/openapi.json
+      - name: Unit tests, types and production build
+        working-directory: frontend
+        run: npm test && npm run typecheck && npm run build
+      - name: Install browser engines
+        working-directory: frontend
+        run: npx playwright install --with-deps chromium webkit
+      - name: Start isolated test services
+        env:
+          DATABASE_URL: sqlite:///./data/e2e.db
+          DEMO_MODE: 'true'
+          API_BASE_URL: http://127.0.0.1:8000
+          FRONTEND_URL: http://127.0.0.1:3000
+        run: |
+          cd backend
+          alembic upgrade head
+          python -m app.seed --demo
+          uvicorn app.main:app --no-access-log --host 127.0.0.1 --port 8000 > /tmp/backend.log 2>&1 &
+          cd ../frontend
+          npm start > /tmp/frontend.log 2>&1 &
+          for attempt in $(seq 1 40); do
+            if curl --fail --silent http://127.0.0.1:3000/api/health; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/backend.log /tmp/frontend.log
+          exit 1
+      - name: Browser workflows
+        working-directory: frontend
+        env:
+          E2E_BASE_URL: http://127.0.0.1:3000
+        run: npm run test:e2e
+      - name: Build container
+        working-directory: frontend
+        run: docker build -t got-a-topic-frontend .
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: browser-test-results
+          path: frontend/test-results
+      - name: Verify frontend container proxy
+        run: |
+          docker run --rm -d --name est-tema-web --network host -e PORT=8080 -e API_BASE_URL=http://127.0.0.1:8000 got-a-topic-frontend
+          for attempt in $(seq 1 40); do
+            if curl --fail --silent http://127.0.0.1:8080/api/health; then exit 0; fi
+            sleep 1
+          done
+          docker logs est-tema-web
+          exit 1

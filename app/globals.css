@@ -11,3 +11,4 @@
 @media(max-width:1200px){.hero-copy{width:77%}.hero-art{right:-75px;opacity:.55}.hero h1{font-size:34px}}
 @media(max-width:800px){.hero-copy{width:80%}.nav-item{font-size:13px!important}.hero-art{opacity:.35}.hero-actions{flex-wrap:wrap}}
 @media(max-width:520px){.hero-copy{width:100%}.hero h1{font-size:35px}.nav-item{font-size:12px!important;padding:11px 9px}.person-card-top{flex-wrap:nowrap}.hero{min-height:355px}}
+.inline-field-error{display:block;font-size:13px;font-weight:400;color:#a13f30;margin-top:3px}input[aria-invalid=true],textarea[aria-invalid=true],select[aria-invalid=true]{border-color:#b25d4c;background:#fff7f3}.btn,.btn-sm,.icon-button,.pick-chip,.filter-chip{min-height:44px}.icon-button{min-width:44px}.form-panel .form-row{grid-template-columns:1fr}

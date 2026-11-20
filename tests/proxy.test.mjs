@@ -39,3 +39,15 @@ test('backend outage becomes a readable 502 instead of an unhandled exception',a
  const previous=global.fetch;global.fetch=async()=>{throw new Error('offline');};
  try{const res=await route.GET(new NextRequest('http://localhost/api/health'),{params:Promise.resolve({path:['health']})});assert.equal(res.status,502);assert.match((await res.json()).error.message,/временно недоступен/);}finally{global.fetch=previous;}
 });
+
+for(const value of ['auto-generated-stub-for-build','not-an-origin','ftp://api.example.test','https://user:secret@api.example.test','https://api.example.test/path','https://api.example.test/?token=secret']) {
+ test(`invalid backend configuration returns safe 502: ${value.split(':')[0]}`,async()=>{
+  const previous=global.fetch;const env=process.env.API_BASE_URL;let called=false;
+  process.env.API_BASE_URL=value;global.fetch=async()=>{called=true;throw Error('must not call upstream');};
+  try{const response=await route.GET(new NextRequest('https://front.example.test/api/health'),{params:Promise.resolve({path:['health']})});assert.equal(response.status,502);assert.equal(called,false);assert.equal(response.headers.get('cache-control'),'no-store');assert.equal(JSON.stringify(await response.json()).includes('secret'),false);}finally{global.fetch=previous;if(env===undefined)delete process.env.API_BASE_URL;else process.env.API_BASE_URL=env;}
+ });
+}
+test('production without backend origin returns 502 rather than connecting to localhost',async()=>{
+ const env=process.env.API_BASE_URL,nodeEnv=process.env.NODE_ENV;delete process.env.API_BASE_URL;process.env.NODE_ENV='production';
+ try{const response=await route.GET(new NextRequest('https://front.example.test/api/health'),{params:Promise.resolve({path:['health']})});assert.equal(response.status,502);}finally{if(env!==undefined)process.env.API_BASE_URL=env;if(nodeEnv===undefined)delete process.env.NODE_ENV;else process.env.NODE_ENV=nodeEnv;}
+});

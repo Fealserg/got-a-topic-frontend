@@ -2,15 +2,16 @@ import { test, expect } from '@playwright/test';
 
 test('landing is readable and has no horizontal overflow', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('heading',{name:/Хороший разговор/})).toBeVisible();
+  await expect(page.getByRole('heading',{name:/Есть что обсудить/})).toBeVisible();
   await page.getByRole('button',{name:'Найти своего собеседника'}).click();
   await expect(page.getByRole('dialog')).toBeVisible();
   await expect(page.getByLabel('Как вас зовут')).toBeVisible();
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
 });
 
-test('invite and accept through the real UI and separate user sessions',async({browser,baseURL})=>{
-  const first=await browser.newContext();const second=await browser.newContext();
+test('invite and accept through the real UI and separate user sessions',async({browser,baseURL,viewport,isMobile,hasTouch,userAgent})=>{
+  const options={viewport,isMobile,hasTouch,userAgent};
+  const first=await browser.newContext(options);const second=await browser.newContext(options);
   try{
     const suffix=Date.now().toString(36)+Math.random().toString(36).slice(2,6);
     const profiles=[];
@@ -39,4 +40,39 @@ test('invite and accept through the real UI and separate user sessions',async({b
   }finally{
     for(const context of [first,second]){await context.request.delete(`${baseURL}/api/me`,{headers:{'X-Requested-With':'pereryv','Origin':baseURL!}});await context.close();}
   }
+});
+
+
+test('registration validates a field on blur and clears its error after correction',async({page})=>{
+ await page.goto('/');
+ await page.getByRole('button',{name:'Найти своего собеседника'}).click();
+ const username=page.locator('input[name="username"]');
+ await username.fill('bad!');await username.blur();
+ await expect(username).toHaveAttribute('aria-invalid','true');
+ await expect(page.locator('#error-username')).toContainText('Используйте');
+ await username.fill('valid-name');
+ await expect(username).toHaveAttribute('aria-invalid','false');
+ await expect(page.locator('#error-username')).toHaveCount(0);
+});
+
+test('unsaved profile changes require confirmation and can be retained',async({page,baseURL})=>{
+ await page.goto('/');
+ const headers={'X-Requested-With':'pereryv','Origin':baseURL!};
+ const username=`draft${Date.now().toString(36)}${Math.random().toString(36).slice(2,5)}`;
+ try{
+  expect((await page.request.post('/api/auth/register',{headers,data:{username,password:'BrowserTest2026!',name:'Проверка черновика'}})).status()).toBe(201);
+  await page.reload();
+  await page.getByRole('button',{name:'Мой профиль',exact:true}).click();
+  await page.locator('input[name="name"]').fill('Несохранённое имя');
+  page.once('dialog',dialog=>dialog.dismiss());
+  await page.getByRole('button',{name:'Найти собеседника',exact:true}).click();
+  await expect(page.locator('input[name="name"]')).toHaveValue('Несохранённое имя');
+  page.once('dialog',dialog=>dialog.accept());
+  await page.getByRole('button',{name:'Найти собеседника',exact:true}).click();
+  await expect(page.getByRole('heading',{name:/Есть что обсудить/})).toBeVisible();
+  const me=await(await page.request.get('/api/me')).json();
+  expect(me.name).toBe('Проверка черновика');
+ }finally{
+  await page.request.delete('/api/me',{headers});
+ }
 });

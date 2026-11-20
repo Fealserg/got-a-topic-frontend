@@ -1,4 +1,4 @@
-# Перерыв · Frontend
+# Есть тема · Frontend
 
 Самостоятельный репозиторий Next.js + TypeScript + Tailwind CSS. Компонент Button использует подход shadcn/ui: локальный код, Radix Slot и cva. Отдельный FastAPI backend подключается через HTTP; сервер Next.js проксирует `/api/*`, бизнес-логики встреч здесь нет.
 
@@ -19,7 +19,7 @@ npm run build
 API_BASE_URL=http://localhost:8000 npm start
 ```
 
-`API_BASE_URL` — окружение серверного процесса. Прокси `app/api/[...path]/route.ts` берёт origin из окружения при каждом запросе; не содержит клиентских секретов. Сессия — HttpOnly cookie. Все изменяющие запросы передают `X-Requested-With: pereryv`.
+`API_BASE_URL` — окружение серверного процесса. В production параметр обязателен; разрешён только HTTP(S) origin без пути и учётных данных. Прокси `app/api/[...path]/route.ts` берёт origin из окружения при каждом запросе; не содержит клиентских секретов. Сессия — HttpOnly cookie. Все изменяющие запросы передают `X-Requested-With: pereryv`.
 
 ## RelaxDev
 
@@ -47,3 +47,5 @@ npm run test:e2e
 ```
 
 E2E написаны для desktop и mobile, создают и удаляют только свои тестовые профили. В исходном окружении не запускались из-за запрета открытия локального порта EPERM. Подробное ТЗ — `docs/specification.md`.
+
+CI `.github/workflows/checks.yml` использует публичный репозиторий `Fealserg/got-a-topic-backend`, проверяет контракт, типы, сборку, Playwright и контейнерный прокси. Сначала нужно опубликовать backend. Пока workflow не запущен, это подготовленные проверки, а не доказательство прохождения E2E.

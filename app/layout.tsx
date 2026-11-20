@@ -1,4 +1,4 @@
 import type { Metadata } from 'next';
 import './globals.css';
-export const metadata: Metadata = { title: 'Перерыв — люди, с которыми есть о чём поговорить', description: 'Найдите собеседника с нужным опытом на Analyst Days. 15 минут, общая тема и полезное знакомство.' };
+export const metadata: Metadata = { title: 'Есть тема — нетворкинг по интересам', description: 'Есть что обсудить. Осталось найти с кем. Найдите собеседника по интересам и договоритесь о встрече на Analyst Days.' };
 export default function Layout({ children }: Readonly<{ children: React.ReactNode }>) { return <html lang="ru"><body>{children}</body></html>; }
