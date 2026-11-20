@@ -49,3 +49,7 @@ npm run test:e2e
 E2E написаны для desktop и mobile, создают и удаляют только свои тестовые профили. В исходном окружении не запускались из-за запрета открытия локального порта EPERM. Подробное ТЗ — `docs/specification.md`.
 
 CI `.github/workflows/checks.yml` использует публичный репозиторий `Fealserg/got-a-topic-backend`, проверяет контракт, типы, сборку, Playwright и контейнерный прокси. Сначала нужно опубликовать backend. Пока workflow не запущен, это подготовленные проверки, а не доказательство прохождения E2E.
+
+## Подтверждённая проверка GitHub Actions
+
+Успешный запуск: https://github.com/Fealserg/got-a-topic-frontend/actions/runs/44759224844. Проверенные commit и результаты шагов: `docs/ci-verification.json`. GitHub CI подтвердил контейнерные проверки; для frontend также пройдены браузерные сценарии. Размещение в RelaxDev пока не подтверждено.
