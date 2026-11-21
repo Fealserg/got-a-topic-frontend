@@ -1,0 +1,146 @@
+{
+  "checked_at_utc": "2026-11-21T10:28:15.805Z",
+  "method": "Local static HTML and assets rendered in isolated browser context; no public hosting claimed",
+  "checks": [
+    {
+      "page": "acceptance.html",
+      "viewport_width": 390,
+      "document_width": 390,
+      "images_loaded": true,
+      "external_scripts": 0
+    },
+    {
+      "page": "api.html",
+      "viewport_width": 390,
+      "document_width": 390,
+      "images_loaded": true,
+      "external_scripts": 0
+    },
+    {
+      "page": "architecture.html",
+      "viewport_width": 390,
+      "document_width": 390,
+      "images_loaded": true,
+      "external_scripts": 0
+    },
+    {
+      "page": "backend-spec.html",
+      "viewport_width": 390,
+      "document_width": 390,
+      "images_loaded": true,
+      "external_scripts": 0
+    },
+    {
+      "page": "business.html",
+      "viewport_width": 390,
+      "document_width": 390,
+      "images_loaded": true,
+      "external_scripts": 0
+    },
+    {
+      "page": "concept.html",
+      "viewport_width": 390,
+      "document_width": 390,
+      "images_loaded": true,
+      "external_scripts": 0
+    },
+    {
+      "page": "context-v0.html",
+      "viewport_width": 390,
+      "document_width": 390,
+      "images_loaded": true,
+      "external_scripts": 0
+    },
+    {
+      "page": "context-v1.html",
+      "viewport_width": 390,
+      "document_width": 390,
+      "images_loaded": true,
+      "external_scripts": 0
+    },
+    {
+      "page": "data-model.html",
+      "viewport_width": 390,
+      "document_width": 390,
+      "images_loaded": true,
+      "external_scripts": 0
+    },
+    {
+      "page": "demo-script.html",
+      "viewport_width": 390,
+      "document_width": 390,
+      "images_loaded": true,
+      "external_scripts": 0
+    },
+    {
+      "page": "development-prompt.html",
+      "viewport_width": 390,
+      "document_width": 390,
+      "images_loaded": true,
+      "external_scripts": 0
+    },
+    {
+      "page": "frontend-spec.html",
+      "viewport_width": 390,
+      "document_width": 390,
+      "images_loaded": true,
+      "external_scripts": 0
+    },
+    {
+      "page": "handoff.html",
+      "viewport_width": 390,
+      "document_width": 390,
+      "images_loaded": true,
+      "external_scripts": 0
+    },
+    {
+      "page": "idea-generation-prompt.html",
+      "viewport_width": 390,
+      "document_width": 390,
+      "images_loaded": true,
+      "external_scripts": 0
+    },
+    {
+      "page": "index.html",
+      "viewport_width": 390,
+      "document_width": 390,
+      "images_loaded": true,
+      "external_scripts": 0
+    },
+    {
+      "page": "landing.html",
+      "viewport_width": 390,
+      "document_width": 390,
+      "images_loaded": true,
+      "external_scripts": 0
+    },
+    {
+      "page": "prompts.html",
+      "viewport_width": 390,
+      "document_width": 390,
+      "images_loaded": true,
+      "external_scripts": 0
+    },
+    {
+      "page": "readiness.html",
+      "viewport_width": 390,
+      "document_width": 390,
+      "images_loaded": true,
+      "external_scripts": 0
+    },
+    {
+      "page": "ux-guide.html",
+      "viewport_width": 390,
+      "document_width": 390,
+      "images_loaded": true,
+      "external_scripts": 0
+    },
+    {
+      "page": "validation.html",
+      "viewport_width": 390,
+      "document_width": 390,
+      "images_loaded": true,
+      "external_scripts": 0
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "recorded_at_utc": "2026-11-21T10:20:20.537Z",
+  "performed_on": "2026-11-21",
+  "source": "Observed production workflow in this conversation; screenshots captured during the run",
+  "environment": "https://got-a-topic-frontend.isodomain.tech/",
+  "accounts_are_synthetic": true,
+  "accounts_are_demo_flagged": false,
+  "registration": {
+    "invalid_login_rejected": true,
+    "error_clears_after_correction": true,
+    "short_password_rejected": true,
+    "consent_required": true,
+    "registration_status": 201,
+    "profile_hidden_by_default": true,
+    "session_survives_reload": true,
+    "logout_status": 200,
+    "login_status": 200,
+    "temporary_registration_accounts_deleted": true,
+    "deletion_status": 200,
+    "session_after_deletion": 401
+  },
+  "meeting": {
+    "id": 2,
+    "ivan": {
+      "status": "accepted",
+      "slot": 2,
+      "topic": 1,
+      "other": "Эльдар"
+    },
+    "eldar": {
+      "status": "accepted",
+      "slot": 2,
+      "topic": 1,
+      "other": "Иван"
+    },
+    "accept_status": 200,
+    "time_moscow": "2026-11-21 13:00–13:15",
+    "location": "Стойка регистрации",
+    "topic": "ИИ в аналитике",
+    "both_uis": {
+      "ivan": "Встреча назначена\nВаше приглашение\nЭ\nЭльдар\n\nТестовый участник\n\nИИ в аналитике\n21 ноября, 13:00–13:15\nСтойка регистрации\n\n«Тестовая встреча: проверяем приглашение и подтверждение в сервисе.»\n\nОтменить",
+      "eldar": "Встреча назначена\nВас пригласили\nИ\nИван\n\nТестовый участник\n\nИИ в аналитике\n21 ноября, 13:00–13:15\nСтойка регистрации\n\n«Тестовая встреча: проверяем приглашение и подтверждение в сервисе.»\n\nОтменить"
+    },
+    "participants": [
+      {
+        "name": "Иван",
+        "visible": true,
+        "availability": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "name": "Эльдар",
+        "visible": true,
+        "availability": [
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      {
+        "name": "Таисия",
+        "visible": true,
+        "availability": [
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    ],
+    "occupied_slot_excluded": true
+  },
+  "limits": [
+    "Synthetic technical test; no real-world meeting attendance or product benefit asserted.",
+    "Past meeting cannot be reused for new invitations; organizer must provide future intervals.",
+    "Test profiles created through regular registration appear in non-demo aggregate metrics."
+  ]
+}

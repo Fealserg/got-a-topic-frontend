@@ -1,0 +1,171 @@
+{
+  "checked_at_utc": "2026-11-21T10:16:19.684Z",
+  "method": "Read-only HTTP and browser checks on deployed services",
+  "checks": [
+    {
+      "url": "https://got-a-topic-frontend.isodomain.tech/",
+      "status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "checked_at_utc": "2026-11-21T10:16:13.125Z"
+    },
+    {
+      "url": "https://got-a-topic-frontend.isodomain.tech/images/conversation-hero.webp",
+      "status": 200,
+      "content_type": "image/webp",
+      "checked_at_utc": "2026-11-21T10:16:13.204Z"
+    },
+    {
+      "url": "https://got-a-topic-frontend.isodomain.tech/api/health",
+      "status": 200,
+      "content_type": "application/json",
+      "checked_at_utc": "2026-11-21T10:16:13.265Z",
+      "body": {
+        "status": "ok"
+      }
+    },
+    {
+      "url": "https://got-a-topic-api.isodomain.tech/api/health",
+      "status": 200,
+      "content_type": "application/json",
+      "checked_at_utc": "2026-11-21T10:16:13.415Z",
+      "body": {
+        "status": "ok"
+      }
+    },
+    {
+      "url": "https://got-a-topic-frontend.isodomain.tech/api/config",
+      "status": 200,
+      "content_type": "application/json",
+      "checked_at_utc": "2026-11-21T10:16:13.472Z",
+      "body": {
+        "topics": [
+          {
+            "id": 1,
+            "name": "ИИ в аналитике"
+          },
+          {
+            "id": 2,
+            "name": "Системный анализ"
+          },
+          {
+            "id": 3,
+            "name": "Управление требованиями"
+          },
+          {
+            "id": 4,
+            "name": "API и интеграции"
+          },
+          {
+            "id": 5,
+            "name": "BPMN и процессы"
+          },
+          {
+            "id": 6,
+            "name": "Каталоги данных"
+          },
+          {
+            "id": 7,
+            "name": "Карьера и развитие"
+          },
+          {
+            "id": 8,
+            "name": "Архитектура"
+          },
+          {
+            "id": 9,
+            "name": "UX-исследования"
+          },
+          {
+            "id": 10,
+            "name": "Управление командой"
+          }
+        ],
+        "slots": [
+          {
+            "id": 1,
+            "starts_at": 1795244400,
+            "ends_at": 1795245300,
+            "location": "Стойка регистрации",
+            "is_demo": false
+          },
+          {
+            "id": 2,
+            "starts_at": 1795255200,
+            "ends_at": 1795256100,
+            "location": "Стойка регистрации",
+            "is_demo": false
+          },
+          {
+            "id": 3,
+            "starts_at": 1795256100,
+            "ends_at": 1795257000,
+            "location": "Стойка регистрации",
+            "is_demo": false
+          },
+          {
+            "id": 4,
+            "starts_at": 1795257000,
+            "ends_at": 1795257900,
+            "location": "Стойка регистрации",
+            "is_demo": false
+          },
+          {
+            "id": 5,
+            "starts_at": 1795257900,
+            "ends_at": 1795258800,
+            "location": "Стойка регистрации",
+            "is_demo": false
+          }
+        ],
+        "demo_enabled": false
+      }
+    },
+    {
+      "url": "https://got-a-topic-frontend.isodomain.tech/api/docs",
+      "status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "checked_at_utc": "2026-11-21T10:16:13.519Z",
+      "has_swagger": true
+    },
+    {
+      "url": "https://got-a-topic-api.isodomain.tech/api/docs",
+      "status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "checked_at_utc": "2026-11-21T10:16:13.559Z",
+      "has_swagger": true
+    },
+    {
+      "url": "https://got-a-topic-api.isodomain.tech/api/openapi.json",
+      "status": 200,
+      "content_type": "application/json",
+      "checked_at_utc": "2026-11-21T10:16:13.607Z"
+    }
+  ],
+  "widths": [
+    {
+      "width": 1440,
+      "document_width": 1440,
+      "images_loaded": true
+    },
+    {
+      "width": 1024,
+      "document_width": 1024,
+      "images_loaded": true
+    },
+    {
+      "width": 768,
+      "document_width": 768,
+      "images_loaded": true
+    },
+    {
+      "width": 390,
+      "document_width": 390,
+      "images_loaded": true
+    },
+    {
+      "width": 320,
+      "document_width": 320,
+      "images_loaded": true
+    }
+  ]
+}

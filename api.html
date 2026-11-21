@@ -1,0 +1,1091 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Есть тема — материалы сдачи хакатона Analyst Days / 23"><title>API и Swagger · Есть тема</title><link rel="stylesheet" href="assets/style.css"></head><body><header><a class="brand" href="index.html">Есть тема<span style="color:#7caa88">.</span></a><span class="tag">Analyst Days / 23 · Материалы проекта</span></header><div class="layout"><aside><nav aria-label="Документы"><a href="index.html">Обзор пакета</a><a href="context-v1.html">Контекст v1</a><a href="business.html">Бизнес-потребность</a><a href="backend-spec.html">ТЗ Backend</a><a href="frontend-spec.html">ТЗ Frontend</a><a href="api.html" aria-current="page">API и Swagger</a><a href="data-model.html">Модель данных</a><a href="architecture.html">ERD и Sequence</a><a href="landing.html">Лендинг</a><a href="acceptance.html">Приёмка</a><a href="validation.html">Проверки</a><a href="prompts.html">Использованные задания</a><a href="context-v0.html">Контекст v0</a><a href="concept.html">Концепция</a><a href="development-prompt.html">Промпт разработки</a><a href="idea-generation-prompt.html">Промпт поиска идей</a><a href="ux-guide.html">Руководство UX</a><a href="demo-script.html">Речь для демо</a><a href="readiness.html">Готовность к сдаче</a><a href="handoff.html">Ссылки для сдачи</a></nav></aside><main id="main"><h1>Контракт API и Swagger</h1>
+<p>Версия API: 1.0.0. Контракт содержит 15 операций на 12 путях. Полная машиночитаемая схема — <a href="openapi.json">openapi.json</a>. Экспорт совпал с контрактом размещённого backend 21 ноября 2026 года.</p>
+<h2>Адреса</h2>
+<ul>
+<li>Backend origin: <a href="https://got-a-topic-api.isodomain.tech">https://got-a-topic-api.isodomain.tech</a></li>
+<li>Через сайт: <a href="https://got-a-topic-frontend.isodomain.tech">https://got-a-topic-frontend.isodomain.tech</a></li>
+<li><a href="https://got-a-topic-api.isodomain.tech/api/docs">Swagger backend</a></li>
+<li><a href="https://got-a-topic-frontend.isodomain.tech/api/docs">Swagger через frontend</a></li>
+<li><a href="https://got-a-topic-api.isodomain.tech/api/openapi.json">Живой OpenAPI</a></li>
+</ul>
+<p>Все пути ниже уже содержат /api. Swagger настроен на /api/docs; стандартный /docs не является адресом документации этого приложения.</p>
+<h2>Доступ и транспорт</h2>
+<p>Сессия передаётся cookie pereryv_session: HttpOnly, SameSite=Strict, Secure в production, TTL 7 дней. После входа не нужно передавать токен в JSON. На изменяющих методах нужен заголовок <code>X-Requested-With: pereryv</code>; Origin, если присутствует, должен входить в разрешённые. GET не требует этого заголовка, хотя общий APIKeyHeader отображается в OpenAPI всех операций. В Swagger Authorize задаёт значение pereryv; для приватных запросов дополнительно нужна сессия входа на том же домене. Пароль или токен организатора не включены в пакет.</p>
+<p>Браузер обращается к /api/* своего frontend-домена; Next.js передаёт тело, cookie и код ответа в отдельный FastAPI. Время — Unix UTC в секундах, интерфейс — Europe/Moscow.</p>
+<h2>Операции</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Метод и путь</th>
+<th>Назначение</th>
+<th>Доступ</th>
+<th>Успешный ответ</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET /api/health</td>
+<td>Проверка сервиса и БД</td>
+<td>Без входа</td>
+<td><code>200: HealthResponse</code></td>
+</tr>
+<tr>
+<td>GET /api/config</td>
+<td>Темы, интервалы и режим демо</td>
+<td>Без входа</td>
+<td><code>200: ConfigResponse</code></td>
+</tr>
+<tr>
+<td>POST /api/auth/register</td>
+<td>Создать скрытый профиль и сессию</td>
+<td>Без входа</td>
+<td><code>201: PrivateProfile</code></td>
+</tr>
+<tr>
+<td>POST /api/auth/login</td>
+<td>Создать новую сессию</td>
+<td>Без входа</td>
+<td><code>200: PrivateProfile</code></td>
+</tr>
+<tr>
+<td>POST /api/auth/logout</td>
+<td>Удалить текущую сессию и cookie</td>
+<td>Текущая сессия, при наличии</td>
+<td><code>200: OkResponse</code></td>
+</tr>
+<tr>
+<td>GET /api/me</td>
+<td>Получить собственный профиль</td>
+<td>Сессия</td>
+<td><code>200: PrivateProfile</code></td>
+</tr>
+<tr>
+<td>PUT /api/me</td>
+<td>Сохранить собственный профиль</td>
+<td>Сессия</td>
+<td><code>200: PrivateProfile</code></td>
+</tr>
+<tr>
+<td>DELETE /api/me</td>
+<td>Удалить профиль и связанные данные</td>
+<td>Сессия</td>
+<td><code>200: OkResponse</code></td>
+</tr>
+<tr>
+<td>GET /api/recommendations</td>
+<td>Получить до 30 объяснимых совпадений</td>
+<td>Сессия; скрытый профиль получает пустой список</td>
+<td><code>200: array&lt;RecommendationResponse&gt;</code></td>
+</tr>
+<tr>
+<td>GET /api/invitations</td>
+<td>Собственные входящие/исходящие и собственная оценка</td>
+<td>Сессия</td>
+<td><code>200: array&lt;InvitationResponse&gt;</code></td>
+</tr>
+<tr>
+<td>POST /api/invitations</td>
+<td>Отправить приглашение</td>
+<td>Сессия; опубликованные совместимые профили</td>
+<td><code>201: InvitationCreated</code></td>
+</tr>
+<tr>
+<td>POST /api/invitations/{invitation_id}/action</td>
+<td>Принять, отклонить или отменить</td>
+<td>Сессия участника; accept/decline только получатель</td>
+<td><code>200: InvitationActionResponse</code></td>
+</tr>
+<tr>
+<td>PUT /api/invitations/{invitation_id}/feedback</td>
+<td>Создать или заменить собственную оценку</td>
+<td>Сессия участника; accepted после окончания</td>
+<td><code>200: OkResponse</code></td>
+</tr>
+<tr>
+<td>POST /api/admin/slots</td>
+<td>Создать будущий 15-минутный интервал</td>
+<td>Сессия организатора</td>
+<td><code>201: SlotCreated</code></td>
+</tr>
+<tr>
+<td>GET /api/admin/stats</td>
+<td>Агрегаты без демо-участников</td>
+<td>Сессия организатора</td>
+<td><code>200: StatsResponse</code></td>
+</tr>
+</tbody></table></div>
+<h2>Входные данные по операциям</h2>
+<h3>GET /api/health</h3>
+<p>Параметров пути и query нет.</p>
+<p>JSON body не требуется.</p>
+<h3>GET /api/config</h3>
+<p>Параметров пути и query нет.</p>
+<p>JSON body не требуется.</p>
+<h3>POST /api/auth/register</h3>
+<p>Параметров пути и query нет.</p>
+<p>JSON body: Register. Поля и ограничения перечислены ниже.</p>
+<h3>POST /api/auth/login</h3>
+<p>Параметров пути и query нет.</p>
+<p>JSON body: Credentials. Поля и ограничения перечислены ниже.</p>
+<h3>POST /api/auth/logout</h3>
+<p>Параметров пути и query нет.</p>
+<p>JSON body не требуется.</p>
+<h3>GET /api/me</h3>
+<p>Параметров пути и query нет.</p>
+<p>JSON body не требуется.</p>
+<h3>PUT /api/me</h3>
+<p>Параметров пути и query нет.</p>
+<p>JSON body: Profile. Поля и ограничения перечислены ниже.</p>
+<h3>DELETE /api/me</h3>
+<p>Параметров пути и query нет.</p>
+<p>JSON body не требуется.</p>
+<h3>GET /api/recommendations</h3>
+<p>Параметров пути и query нет.</p>
+<p>JSON body не требуется.</p>
+<h3>GET /api/invitations</h3>
+<p>Параметров пути и query нет.</p>
+<p>JSON body не требуется.</p>
+<h3>POST /api/invitations</h3>
+<p>Параметров пути и query нет.</p>
+<p>JSON body: InviteInput. Поля и ограничения перечислены ниже.</p>
+<h3>POST /api/invitations/{invitation_id}/action</h3>
+<p>path: invitation_id (integer, обязательно)</p>
+<p>JSON body: Action. Поля и ограничения перечислены ниже.</p>
+<h3>PUT /api/invitations/{invitation_id}/feedback</h3>
+<p>path: invitation_id (integer, обязательно)</p>
+<p>JSON body: FeedbackInput. Поля и ограничения перечислены ниже.</p>
+<h3>POST /api/admin/slots</h3>
+<p>Параметров пути и query нет.</p>
+<p>JSON body: SlotInput. Поля и ограничения перечислены ниже.</p>
+<h3>GET /api/admin/stats</h3>
+<p>Параметров пути и query нет.</p>
+<p>JSON body не требуется.</p>
+<h2>Схемы запросов и ответов</h2>
+<p>Имена схем совпадают с OpenAPI. Знак null означает допустимое пустое значение; отсутствие обязательности означает, что поле можно не передавать. Дополнительные бизнес-проверки приведены после таблиц.</p>
+<h3>Action</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>action</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>pattern: &quot;^(accept|decline|cancel)$&quot;</td>
+</tr>
+</tbody></table></div>
+<h3>ConfigResponse</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>topics</td>
+<td><code>array&lt;TopicResponse&gt;</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>slots</td>
+<td><code>array&lt;SlotResponse&gt;</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>demo_enabled</td>
+<td><code>boolean</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+</tbody></table></div>
+<h3>Credentials</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>username</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>minLength: 3; maxLength: 32; pattern: &quot;^[a-zA-Z0-9_.-]+$&quot;</td>
+</tr>
+<tr>
+<td>password</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>minLength: 10; maxLength: 128</td>
+</tr>
+</tbody></table></div>
+<h3>ErrorDetail</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>code</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>message</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>fields</td>
+<td><code>array&lt;FieldError&gt; / null</code></td>
+<td>Нет</td>
+<td>—</td>
+</tr>
+</tbody></table></div>
+<h3>ErrorResponse</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>error</td>
+<td><code>ErrorDetail</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+</tbody></table></div>
+<h3>FeedbackInput</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>happened</td>
+<td><code>boolean</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>useful</td>
+<td><code>boolean / null</code></td>
+<td>Нет</td>
+<td>—</td>
+</tr>
+</tbody></table></div>
+<h3>FeedbackResponse</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>happened</td>
+<td><code>boolean</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>useful</td>
+<td><code>boolean / null</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+</tbody></table></div>
+<h3>FieldError</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>field</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>message</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+</tbody></table></div>
+<h3>HealthResponse</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>status</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+</tbody></table></div>
+<h3>InvitationActionResponse</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>status</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>enum: [&quot;accepted&quot;,&quot;declined&quot;,&quot;cancelled&quot;]</td>
+</tr>
+</tbody></table></div>
+<h3>InvitationCreated</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>status</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+</tbody></table></div>
+<h3>InvitationResponse</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>incoming</td>
+<td><code>boolean</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>other</td>
+<td><code>PublicProfile</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>slot_id</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>topic_id</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>message</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>status</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>enum: [&quot;pending&quot;,&quot;accepted&quot;,&quot;declined&quot;,&quot;cancelled&quot;,&quot;conflict&quot;,&quot;expired&quot;]</td>
+</tr>
+<tr>
+<td>feedback</td>
+<td><code>FeedbackResponse / null</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+</tbody></table></div>
+<h3>InviteInput</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>recipient_id</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>slot_id</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>topic_id</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>message</td>
+<td><code>string</code></td>
+<td>Нет</td>
+<td>maxLength: 300; default: &quot;&quot;</td>
+</tr>
+</tbody></table></div>
+<h3>OkResponse</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ok</td>
+<td><code>boolean</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+</tbody></table></div>
+<h3>PrivateProfile</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>name</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>role</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>company</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>bio</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>wanted</td>
+<td><code>array&lt;integer&gt;</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>offered</td>
+<td><code>array&lt;integer&gt;</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>availability</td>
+<td><code>array&lt;integer&gt;</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>visible</td>
+<td><code>boolean</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>is_demo</td>
+<td><code>boolean</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>username</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>is_admin</td>
+<td><code>boolean</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+</tbody></table></div>
+<h3>Profile</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>name</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>minLength: 1; maxLength: 80</td>
+</tr>
+<tr>
+<td>role</td>
+<td><code>string</code></td>
+<td>Нет</td>
+<td>maxLength: 100; default: &quot;&quot;</td>
+</tr>
+<tr>
+<td>company</td>
+<td><code>string</code></td>
+<td>Нет</td>
+<td>maxLength: 100; default: &quot;&quot;</td>
+</tr>
+<tr>
+<td>bio</td>
+<td><code>string</code></td>
+<td>Нет</td>
+<td>maxLength: 500; default: &quot;&quot;</td>
+</tr>
+<tr>
+<td>wanted</td>
+<td><code>array&lt;integer&gt;</code></td>
+<td>Да</td>
+<td>maxItems: 5</td>
+</tr>
+<tr>
+<td>offered</td>
+<td><code>array&lt;integer&gt;</code></td>
+<td>Да</td>
+<td>maxItems: 5</td>
+</tr>
+<tr>
+<td>availability</td>
+<td><code>array&lt;integer&gt;</code></td>
+<td>Да</td>
+<td>maxItems: 20</td>
+</tr>
+<tr>
+<td>visible</td>
+<td><code>boolean</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+</tbody></table></div>
+<h3>PublicProfile</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>name</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>role</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>company</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>bio</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>wanted</td>
+<td><code>array&lt;integer&gt;</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>offered</td>
+<td><code>array&lt;integer&gt;</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>availability</td>
+<td><code>array&lt;integer&gt;</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>visible</td>
+<td><code>boolean</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>is_demo</td>
+<td><code>boolean</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+</tbody></table></div>
+<h3>RecommendationResponse</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>user</td>
+<td><code>PublicProfile</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>score</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>learn_topics</td>
+<td><code>array&lt;integer&gt;</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>share_topics</td>
+<td><code>array&lt;integer&gt;</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>common_topics</td>
+<td><code>array&lt;integer&gt;</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>slot_ids</td>
+<td><code>array&lt;integer&gt;</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+</tbody></table></div>
+<h3>Register</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>username</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>minLength: 3; maxLength: 32; pattern: &quot;^[a-zA-Z0-9_.-]+$&quot;</td>
+</tr>
+<tr>
+<td>password</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>minLength: 10; maxLength: 128</td>
+</tr>
+<tr>
+<td>name</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>minLength: 1; maxLength: 80</td>
+</tr>
+</tbody></table></div>
+<h3>SlotCreated</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+</tbody></table></div>
+<h3>SlotInput</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>starts_at</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>ends_at</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>location</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>minLength: 1; maxLength: 150</td>
+</tr>
+</tbody></table></div>
+<h3>SlotResponse</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>starts_at</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>ends_at</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>location</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>is_demo</td>
+<td><code>boolean</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+</tbody></table></div>
+<h3>StatsResponse</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>profiles</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>active_profiles</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>participants_with_meeting</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>invitations</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>ever_accepted</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>cancelled_after_accept</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>confirmed_meetings</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>positive_ratings</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>ratings</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>feedback_responses</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>demo_excluded</td>
+<td><code>boolean</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>topics</td>
+<td><code>array&lt;TopicStats&gt;</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+</tbody></table></div>
+<h3>TopicResponse</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>name</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+</tbody></table></div>
+<h3>TopicStats</h3>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Обязательно</th>
+<th>Ограничения</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>name</td>
+<td><code>string</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+<tr>
+<td>participants</td>
+<td><code>integer</code></td>
+<td>Да</td>
+<td>—</td>
+</tr>
+</tbody></table></div>
+<h2>Бизнес-проверки</h2>
+<ul>
+<li>Публикация требует непустую тему запроса или опыта и будущую доступность. Списки тем до 5, доступность до 20; неизвестные ID и прошлые слоты отклоняются.</li>
+<li>Приглашение требует двух видимых профилей, совместимой темы и общего будущего незанятого слота; себе приглашать нельзя. Повтор той же пары ограничен часом.</li>
+<li>Только получатель принимает/отклоняет. Принятие резервирует оба времени в одной транзакции. Участники отменяют до начала. Повтор уже выполненного действия возвращает текущий желаемый статус.</li>
+<li>Отзыв разрешён после ends_at для accepted; при happened=false useful должен быть null.</li>
+<li>Слот длится ровно 900 секунд, начинается в будущем и не пересекается с существующими.</li>
+</ul>
+<h2>Ошибки и ограничения частоты</h2>
+<p>Общий конверт: <code>{&quot;error&quot;:{&quot;code&quot;:409,&quot;message&quot;:&quot;Приглашение больше недействительно.&quot;}}</code>. Для 422 дополнительно fields с именами полей и сообщениями без исходных значений.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Код</th>
+<th>Значение</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>401</td>
+<td>Нет действующей сессии</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Недопустимый Origin/CSRF-заголовок, роль или действие отправителя</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Объект не найден или приглашение чужое</td>
+</tr>
+<tr>
+<td>409</td>
+<td>Конфликт времени, состояния, повтор приглашения или логина</td>
+</tr>
+<tr>
+<td>422</td>
+<td>Ошибка входных данных или бизнес-валидации</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Превышение частоты; Retry-After в секундах</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Безопасное сообщение без внутренних подробностей</td>
+</tr>
+<tr>
+<td>502</td>
+<td>Ошибка frontend-proxy при недоступном backend или неверном API_BASE_URL</td>
+</tr>
+</tbody></table></div>
+<p>Вход: 10/минуту на адрес+логин; регистрация: 30/минуту на адрес; приглашения: 10/минуту на адрес+аккаунт. Лимиты хранятся в памяти одного worker; за proxy общий адрес может объединять пользователей.</p>
+<h2>Примеры JSON</h2>
+<p>Примеры используют условные ID, а не гарантируют существование этих объектов в production. Сначала нужно получить актуальные темы и интервалы из GET /api/config.</p>
+<p>Публикация профиля — PUT /api/me:</p>
+<pre><code class="language-json">{&quot;name&quot;:&quot;Участник A&quot;,&quot;role&quot;:&quot;Аналитик&quot;,&quot;company&quot;:&quot;&quot;,&quot;bio&quot;:&quot;Хочу обменяться опытом&quot;,&quot;wanted&quot;:[1],&quot;offered&quot;:[2],&quot;availability&quot;:[1],&quot;visible&quot;:true}
+</code></pre>
+<p>Приглашение — POST /api/invitations; успешный ответ 201:</p>
+<pre><code class="language-json">{&quot;recipient_id&quot;:2,&quot;slot_id&quot;:1,&quot;topic_id&quot;:1,&quot;message&quot;:&quot;Обсудим опыт внедрения?&quot;}
+</code></pre>
+<pre><code class="language-json">{&quot;id&quot;:1,&quot;status&quot;:&quot;pending&quot;}
+</code></pre>
+<p>Принятие — POST /api/invitations/1/action; успешный ответ 200:</p>
+<pre><code class="language-json">{&quot;action&quot;:&quot;accept&quot;}
+</code></pre>
+<pre><code class="language-json">{&quot;status&quot;:&quot;accepted&quot;}
+</code></pre>
+<p>После конца встречи — PUT /api/invitations/1/feedback:</p>
+<pre><code class="language-json">{&quot;happened&quot;:true,&quot;useful&quot;:true}
+</code></pre>
+<p><a href="architecture.html">Процесс и состояния</a>, <a href="backend-spec.html">ТЗ Backend</a>, <a href="acceptance.html">проверка сценария</a>.</p>
+<p class="source">Исходный документ: <a href="sources/api.md">api.md</a> · <a href="index.html">К составу пакета</a></p></main></div><footer>Есть что обсудить. Осталось найти с кем. · Пакет от 21 ноября 2026 года</footer></body></html>

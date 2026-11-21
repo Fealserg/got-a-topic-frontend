@@ -1,0 +1,69 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Есть тема — материалы сдачи хакатона Analyst Days / 23"><title>Проверки · Есть тема</title><link rel="stylesheet" href="assets/style.css"></head><body><header><a class="brand" href="index.html">Есть тема<span style="color:#7caa88">.</span></a><span class="tag">Analyst Days / 23 · Материалы проекта</span></header><div class="layout"><aside><nav aria-label="Документы"><a href="index.html">Обзор пакета</a><a href="context-v1.html">Контекст v1</a><a href="business.html">Бизнес-потребность</a><a href="backend-spec.html">ТЗ Backend</a><a href="frontend-spec.html">ТЗ Frontend</a><a href="api.html">API и Swagger</a><a href="data-model.html">Модель данных</a><a href="architecture.html">ERD и Sequence</a><a href="landing.html">Лендинг</a><a href="acceptance.html">Приёмка</a><a href="validation.html" aria-current="page">Проверки</a><a href="prompts.html">Использованные задания</a><a href="context-v0.html">Контекст v0</a><a href="concept.html">Концепция</a><a href="development-prompt.html">Промпт разработки</a><a href="idea-generation-prompt.html">Промпт поиска идей</a><a href="ux-guide.html">Руководство UX</a><a href="demo-script.html">Речь для демо</a><a href="readiness.html">Готовность к сдаче</a><a href="handoff.html">Ссылки для сдачи</a></nav></aside><main id="main"><h1>Проверки и ограничения подтверждений</h1>
+<p>Обновлено 21 ноября 2026 года после нового дизайна, исправления Docker и production-проверки регистрации/встречи. Свидетельства относятся к конкретным действиям и времени, а не гарантируют непрерывную доступность.</p>
+<h2>Опубликованная версия</h2>
+<p>Восемь чтений вернули HTTP 200: сайт, WebP-изображение, health обоих сервисов, конфигурация, Swagger обоих доменов и OpenAPI backend. Время и ответы — <a href="evidence/public-checks.json">public-checks.json</a>. На ширинах 1440, 1024, 768, 390 и 320 px документ помещается по ширине, изображения загружаются.</p>
+<p>Живой OpenAPI сравнен с тремя локальными копиями: совпадает, 12 путей и 15 операций. Swagger доступен на <code>/api/docs</code>, включая frontend-домен. <code>GET /api/me</code> без входа ожидаемо возвращает 401; это не сбой регистрации.</p>
+<p>Лендинг представляет четыре новых блока. Проверены сцена по скроллу, замирание без прокрутки, обратное движение, остановки жестов на границах, переходы кнопками, возврат домой с клавиатуры и reduced motion. <a href="landing.html">Скриншоты</a>.</p>
+<p>При первом размещении нового дизайна изображение возвращало 404: Docker runner не копировал <code>public</code>. Исправлено копирование; после пользовательской пересборки <code>/images/conversation-hero.webp</code> отвечает 200 и изображение видно в hero и анимации. Локальный Docker не запускался: CLI отсутствует. CI теперь содержит проверку HTTP и побайтового совпадения файла из контейнера; её новый результат нельзя заменять старым CI.</p>
+<h2>Production-регистрация и встреча</h2>
+<p><a href="evidence/production-scenario.json">Машиночитаемое свидетельство</a> фиксирует наблюдавшиеся действия на тестовых аккаунтах 21 ноября:</p>
+<ul>
+<li>Ошибки некорректного логина, короткого пароля и отсутствия согласия; исправление снимает ошибку.</li>
+<li>Регистрация — 201; открытие скрытого профиля, авторизованная сессия, сохранность после reload, выход и повторный вход — 200.</li>
+<li>Временные аккаунты теста регистрации удалены; прежняя сессия после удаления получила 401.</li>
+<li>Иван, Эльдар и Таисия созданы отдельно по поручению пользователя и оставлены. У всех опубликованы темы и четыре слота id=2–5, 13:00–14:00 МСК.</li>
+<li>Иван увидел Эльдара и Таисию в подборе, отправил Эльдару приглашение на 13:00–13:15 по теме «ИИ в аналитике». Получатель принял в отдельном браузерном контексте — 200.</li>
+<li>У обеих сторон invitation id=2, status=accepted, slot_id=2, topic_id=1; интерфейс показывает «Встреча назначена», одинаковые тему, время и место. Занятый слот отсутствует в дальнейшем подборе Ивана.</li>
+</ul>
+<p>Техническая проверка выполнена через API и реальный интерфейс, без подмены production тестовыми ответами. Предшествующая проверка вёрстки с API-фикстурами отдельно описана в исходном отчёте интеграции; она не используется как доказательство живого сценария.</p>
+<p>Снимки обеих сторон сделаны во время сценария и включены в <a href="acceptance.html">приёмку</a>. Сам интервал уже завершился; для повторной демонстрации нужны будущие слоты. Факт реального офлайн-разговора и полезность не проверялись. Ручные тестовые аккаунты имеют is_demo=false и влияют на агрегаты; это не продуктовый пилот.</p>
+<h2>Локальные проверки текущего кода</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Проверка</th>
+<th>Результат</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Backend: pytest tests -q</td>
+<td>25 passed, изолированная временная БД</td>
+</tr>
+<tr>
+<td>Frontend: npm test</td>
+<td>10 passed</td>
+</tr>
+<tr>
+<td>Frontend: npm run typecheck</td>
+<td>Пройдено</td>
+</tr>
+<tr>
+<td>Frontend: npm run build</td>
+<td>Пройдено после интеграции и исправления доставки public</td>
+</tr>
+<tr>
+<td>Alembic upgrade/check</td>
+<td>Ранее пройдены на отдельной временной БД; схема не менялась</td>
+</tr>
+<tr>
+<td>Контракт</td>
+<td>Живой OpenAPI совпадает с локальными копиями</td>
+</tr>
+</tbody></table></div>
+<p>У backend-тестов одно предупреждение Starlette/httpx о будущей смене транспорта TestClient. Полный локальный E2E на Next.js+Uvicorn недоступен из-за запрета bind (<code>EPERM</code>); это отличается от успешно пройденной ручной production-проверки. Docker CLI локально отсутствует.</p>
+<h2>Проверка комплекта</h2>
+<p>HTML, исходники, готовые SVG, OpenAPI, актуальные снимки, сценарий выступления, чек-лист и архивы исходников находятся в одном комплекте. Валидатор проверяет внутренние ссылки, SHA-256, SVG и отсутствие секретных/базовых файлов, а также совпадение контракта. Результаты проверки страниц на телефоне — <a href="evidence/document-checks.json">document-checks.json</a>. После изменения источников требуется повторная сборка и проверка.</p>
+<h2>Новый GitHub CI — текущая версия приложения</h2>
+<p><a href="https://github.com/Fealserg/got-a-topic-frontend/actions/runs/44894127596">Запуск 44894127596</a> завершился success. На коммите <code>fef8e74</code> пройдены общий API-контракт, unit/proxy, TypeScript, production build, браузерные сценарии desktop/mobile, сборка Docker, контейнерный proxy и HTTP-загрузка изображения с побайтовым сравнением. Это устраняет прежнюю неопределённость именно по новому образу; постоянство данных backend на RelaxDev проверкой не покрывается.</p>
+<p>После проверенного коммита опубликован только документационный <code>00f9cde</code>, обновляющий <code>docs/submission.md</code> с <code>[skip ci]</code>. Он не меняет код приложения. Точные SHA, шаги и публичный HEAD зафиксированы в <a href="evidence/release-provenance.json">release-provenance.json</a>.</p>
+<h2>Исторический GitHub CI</h2>
+<p>Backend: <a href="https://github.com/Fealserg/got-a-topic-backend/actions/runs/44759178052">запуск 44759178052</a>. Frontend: <a href="https://github.com/Fealserg/got-a-topic-frontend/actions/runs/44759224844">запуск 44759224844</a>. Проверенные коммиты — <a href="evidence/ci-verification.json">ci-verification.json</a>. Они предшествуют новому дизайну и не подтверждают новый commit. Сведения о текущей публикации исходников — <a href="evidence/release-provenance.json">release-provenance.json</a>.</p>
+<h2>Что не подтверждено</h2>
+<ul>
+<li>Постоянство SQLite при полном пересоздании backend-контейнера, наличие volume <code>/data</code>, резервные копии.</li>
+<li>Точный Git SHA исходников работающего контейнера: API и видимое поведение проверены, SHA контейнера не опубликован.</li>
+<li>Все альтернативные и конкурентные сценарии именно в новом production; они покрыты API-тестами, но не новым полным ручным прогоном.</li>
+<li>Реальный продуктовый эффект, интервью и пилот.</li>
+<li>Отправка формы организаторам. Видео исключено пользователем.</li>
+</ul>
+<p class="source">Исходный документ: <a href="sources/validation.md">validation.md</a> · <a href="index.html">К составу пакета</a></p></main></div><footer>Есть что обсудить. Осталось найти с кем. · Пакет от 21 ноября 2026 года</footer></body></html>

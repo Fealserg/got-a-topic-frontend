@@ -1,0 +1,23 @@
+sequenceDiagram
+  actor A as Отправитель
+  actor B as Получатель
+  participant UI as Next.js
+  participant API as FastAPI
+  participant DB as SQLite
+  A->>UI: Пригласить: тема и свободный слот
+  UI->>API: POST /api/invitations + cookie + CSRF header
+  API->>DB: Проверить профили/тему/доступность, сохранить pending
+  API-->>UI: 201 pending
+  B->>UI: Открыть входящие и принять
+  UI->>API: POST /api/invitations/id/action
+  API->>DB: BEGIN IMMEDIATE
+  API->>DB: Проверить владельца, статус, время и занятость
+  alt Оба свободны
+    API->>DB: Создать 2 bookings, accepted, конфликтующие pending → conflict
+    API->>DB: COMMIT
+    API-->>UI: 200 accepted
+    UI-->>B: Время, место и тема встречи
+  else Конфликт или приглашение недействительно
+    API->>DB: ROLLBACK
+    API-->>UI: 409 + понятная ошибка (права: 403, чужое: 404)
+  end

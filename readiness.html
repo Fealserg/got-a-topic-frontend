@@ -1,0 +1,81 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Есть тема — материалы сдачи хакатона Analyst Days / 23"><title>Готовность к сдаче · Есть тема</title><link rel="stylesheet" href="assets/style.css"></head><body><header><a class="brand" href="index.html">Есть тема<span style="color:#7caa88">.</span></a><span class="tag">Analyst Days / 23 · Материалы проекта</span></header><div class="layout"><aside><nav aria-label="Документы"><a href="index.html">Обзор пакета</a><a href="context-v1.html">Контекст v1</a><a href="business.html">Бизнес-потребность</a><a href="backend-spec.html">ТЗ Backend</a><a href="frontend-spec.html">ТЗ Frontend</a><a href="api.html">API и Swagger</a><a href="data-model.html">Модель данных</a><a href="architecture.html">ERD и Sequence</a><a href="landing.html">Лендинг</a><a href="acceptance.html">Приёмка</a><a href="validation.html">Проверки</a><a href="prompts.html">Использованные задания</a><a href="context-v0.html">Контекст v0</a><a href="concept.html">Концепция</a><a href="development-prompt.html">Промпт разработки</a><a href="idea-generation-prompt.html">Промпт поиска идей</a><a href="ux-guide.html">Руководство UX</a><a href="demo-script.html">Речь для демо</a><a href="readiness.html" aria-current="page">Готовность к сдаче</a><a href="handoff.html">Ссылки для сдачи</a></nav></aside><main id="main"><h1>Чек-лист готовности материалов</h1>
+<p>Сверено 21 ноября 2026 года с <a href="https://ad23-hackathon-info.website.yandexcloud.net/artifacts/">требованиями организаторов</a>. Это комплект без видео по поручению пользователя. Состояние публикации исходников — в <a href="evidence/release-provenance.json">release-provenance.json</a>.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>№</th>
+<th>Требование</th>
+<th>Материал и статус</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>01</td>
+<td>ТЗ Backend и Frontend</td>
+<td><a href="backend-spec.html">Backend</a>, <a href="frontend-spec.html">Frontend</a>: актуализировано под четыре блока, реальные формы и прокрутку</td>
+</tr>
+<tr>
+<td>02</td>
+<td>BPMN или Sequence</td>
+<td><a href="architecture.html">Sequence</a>: реальная отправка и атомарное принятие</td>
+</tr>
+<tr>
+<td>03</td>
+<td>Контракт и доступный Swagger</td>
+<td><a href="api.html">API</a>, OpenAPI JSON; обе Swagger-ссылки отвечают 200</td>
+</tr>
+<tr>
+<td>04</td>
+<td>Таблицы и ERD</td>
+<td><a href="data-model.html">Модель данных</a> и готовая ERD SVG со связями и ключами</td>
+</tr>
+<tr>
+<td>05</td>
+<td>Работающий сайт</td>
+<td>Публичная версия, фотография и API проверены; регистрация и встреча подтверждены на тестовых аккаунтах</td>
+</tr>
+<tr>
+<td>06</td>
+<td>Бизнес-потребность</td>
+<td><a href="context-v1.html">Раздел 1 v1</a>, <a href="business.html">боль, ценность и измеримые определения</a>; эффект пока не измерен</td>
+</tr>
+<tr>
+<td>07</td>
+<td>Продающий лендинг</td>
+<td><a href="landing.html">Четыре блока и актуальные скриншоты</a></td>
+</tr>
+<tr>
+<td>08</td>
+<td>Видео 3–5 минут</td>
+<td>Исключено пользователем; вместо записи приложен <a href="demo-script.html">текст демо</a>. Это не замена требуемому организаторами видео</td>
+</tr>
+<tr>
+<td>09</td>
+<td>Использованные промпты</td>
+<td><a href="prompts.html">Задания и решения</a>, полные исходные промпты и промпт изображения</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Входные документы</td>
+<td>v0 сохранён историческим; v1, ограничения и результаты актуализированы</td>
+</tr>
+</tbody></table></div>
+<p>Новый frontend CI успешно проверил приложение, desktop/mobile браузерные сценарии и Docker, включая доставку изображения. Актуальный исходный код опубликован; документальная правка после проверенного коммита отдельно отмечена в манифесте происхождения.</p>
+<h2>Что входит в комплект</h2>
+<ul>
+<li>HTML-навигация и документы для чтения после распаковки.</li>
+<li>Редактируемые текстовые исходники; Mermaid и готовые SVG.</li>
+<li>OpenAPI и машиночитаемые свидетельства с датами и границами проверок.</li>
+<li>Новые снимки лендинга, сцены и формы; снимки обеих сторон тестовой встречи.</li>
+<li>Архивы исходников frontend и backend в <code>code/</code>; без .git, зависимостей, .env и баз участников.</li>
+<li>Манифест SHA-256 и контрольная сумма внешнего ZIP.</li>
+</ul>
+<h2>Что требуется для финальной сдачи</h2>
+<ol>
+<li>Опубликовать комплект на GitHub Pages или облачном диске с чтением и скачиванием; проверить ссылку без входа. Наличие локального ZIP само по себе этого не подтверждает.</li>
+<li>Если организаторы требуют полный набор, самостоятельно записать и выложить видео 3–5 минут. Запись исключена из текущего поручения.</li>
+<li>Передать ссылки в единую форму организаторов. Ссылка на форму не указана на странице требований; автоматическая отправка не выполнялась.</li>
+<li>Для живого повторения назначения встречи обеспечить будущий слот. Сохранённая тестовая встреча на 13:00–13:15 уже прошла, её можно показать как результат.</li>
+</ol>
+<h2>Явные ограничения</h2>
+<p>Постоянство диска SQLite после полного редеплоя backend не подтверждено. Тестовые аккаунты входят в агрегаты, их нельзя выдавать за результат пилота. Сценарий с настоящими добровольцами и измеримый эффект ещё предстоят. Секретный файл доступов и исходная БД не должны попадать в публичный пакет.</p>
+<p class="source">Исходный документ: <a href="sources/readiness.md">readiness.md</a> · <a href="index.html">К составу пакета</a></p></main></div><footer>Есть что обсудить. Осталось найти с кем. · Пакет от 21 ноября 2026 года</footer></body></html>

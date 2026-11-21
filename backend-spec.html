@@ -1,0 +1,92 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Есть тема — материалы сдачи хакатона Analyst Days / 23"><title>ТЗ Backend · Есть тема</title><link rel="stylesheet" href="assets/style.css"></head><body><header><a class="brand" href="index.html">Есть тема<span style="color:#7caa88">.</span></a><span class="tag">Analyst Days / 23 · Материалы проекта</span></header><div class="layout"><aside><nav aria-label="Документы"><a href="index.html">Обзор пакета</a><a href="context-v1.html">Контекст v1</a><a href="business.html">Бизнес-потребность</a><a href="backend-spec.html" aria-current="page">ТЗ Backend</a><a href="frontend-spec.html">ТЗ Frontend</a><a href="api.html">API и Swagger</a><a href="data-model.html">Модель данных</a><a href="architecture.html">ERD и Sequence</a><a href="landing.html">Лендинг</a><a href="acceptance.html">Приёмка</a><a href="validation.html">Проверки</a><a href="prompts.html">Использованные задания</a><a href="context-v0.html">Контекст v0</a><a href="concept.html">Концепция</a><a href="development-prompt.html">Промпт разработки</a><a href="idea-generation-prompt.html">Промпт поиска идей</a><a href="ux-guide.html">Руководство UX</a><a href="demo-script.html">Речь для демо</a><a href="readiness.html">Готовность к сдаче</a><a href="handoff.html">Ссылки для сдачи</a></nav></aside><main id="main"><h1>ТЗ Backend · Есть тема</h1>
+<p>Самостоятельный HTTP-сервис, FastAPI; все пути <code>/api/*</code>. Структура данных и процесс — <a href="architecture.html">архитектура и ERD</a>. OpenAPI генерируется приложением, Swagger <code>/api/docs</code>. Ответы всех операций описаны Pydantic-моделями в <code>app/schemas.py</code>; экспорт OpenAPI — в <a href="openapi.json">openapi.json</a>. Ошибки: <code>{&quot;error&quot;:{&quot;code&quot;:409,&quot;message&quot;:&quot;…&quot;}}</code>; при валидации дополнительно безопасный список полей без входных паролей.</p>
+<h2>API</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Метод</th>
+<th>Путь</th>
+<th>Назначение / доступ</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET</td>
+<td>/api/health</td>
+<td>Живость и SELECT 1</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/api/config</td>
+<td>Справочник тем, интервалы и флаг демо</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/auth/register</td>
+<td>Логин 3–32 ASCII-символа, пароль 10–128, имя; скрытый профиль, cookie, 201</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/auth/login</td>
+<td>Проверка scrypt, новая случайная сессия</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/auth/logout</td>
+<td>Удаление текущей сессии и cookie</td>
+</tr>
+<tr>
+<td>GET / PUT / DELETE</td>
+<td>/api/me</td>
+<td>Собственный профиль, изменение, удаление</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/api/recommendations</td>
+<td>До 30 объяснимых рекомендаций для опубликованного профиля</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/invitations</td>
+<td>Получатель, слот, общая тема, сообщение ≤300; 201</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/api/invitations</td>
+<td>Только собственные приглашения, текущий статус и собственная оценка</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/invitations/{invitation_id}/action</td>
+<td><code>action: accept / decline / cancel</code></td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/api/invitations/{invitation_id}/feedback</td>
+<td><code>happened: bool</code>, <code>useful: bool/null</code></td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/admin/slots</td>
+<td>Организатор: будущий непересекающийся интервал 900 секунд</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/api/admin/stats</td>
+<td>Организатор: агрегаты без демо-профилей и их встреч</td>
+</tr>
+</tbody></table></div>
+<p>Изменяющие методы требуют <code>X-Requested-With: pereryv</code>, допустимый Origin при наличии. CORS только из FRONTEND_URL. Swagger Authorize позволяет указать значение заголовка. Cookie HttpOnly, SameSite=Strict, Secure в production, TTL 7 дней; в БД хранится SHA-256 токена. Неуспешный вход одинаково отвечает для несуществующего пользователя и неверного пароля.</p>
+<h2>Примеры</h2>
+<p>Создать приглашение: <code>{&quot;recipient_id&quot;:2,&quot;slot_id&quot;:1,&quot;topic_id&quot;:1,&quot;message&quot;:&quot;Обсудим опыт внедрения?&quot;}</code>. Ответ: <code>{&quot;id&quot;:1,&quot;status&quot;:&quot;pending&quot;}</code>.</p>
+<p>Профиль PUT: <code>{&quot;name&quot;:&quot;Анна&quot;,&quot;role&quot;:&quot;Аналитик&quot;,&quot;company&quot;:&quot;&quot;,&quot;bio&quot;:&quot;Хочу обменяться опытом&quot;,&quot;wanted&quot;:[1],&quot;offered&quot;:[2],&quot;availability&quot;:[1],&quot;visible&quot;:true}</code>. Каждый список тем ≤5, доступность ≤20. Неизвестные темы и прошедшие интервалы отклоняются.</p>
+<p>401 — нет сессии; 403 — запрещён источник/роль/действие отправителя; 404 — чужое или отсутствующее приглашение; 409 — повтор, конфликт времени или недопустимый переход; 422 — некорректные данные; 429 — ограничение частоты с Retry-After; непредвиденные 500 — безопасный JSON без технических деталей.</p>
+<h2>Подбор</h2>
+<p>3 × число тем «мой запрос / опыт другого» + 2 × «мой опыт / запрос другого» + число оставшихся общих тем. Требуется положительный балл и общий будущий незанятый слот. Сортировка по убыванию балла, затем id. Причина раскрывает идентификаторы тем, не квалификацию. Собственные/скрытые/уже встречавшиеся по принятому приглашению исключаются.</p>
+<h2>Приёмка и ограничения</h2>
+<p>Права и данные проверяются сервером. Повтор принятия идемпотентен для того же получателя. Конкурирующие принятия на один слот дают одну встречу. Отмена удаляет занятость. Приглашать себя, использовать чужой слот, тему без совпадения, отвечать за другого нельзя. Повторное приглашение тому же человеку ограничено часом, отправка — 10/минуту на пару «адрес + аккаунт», вход — 10/минуту на пару «адрес + логин», регистрация — 30/минуту на адрес. За прокси регистрационные лимиты могут объединять пользователей; настройку шлюза уточнить до массового пилота. Лимиты одного процесса не заменяют шлюз при масштабировании.</p>
+<p>Удаление каскадное; индивидуальные контакты не собираются. SQLite требует постоянного диска, одного экземпляра и worker. Наличие постоянного диска в RelaxDev не подтверждено. Времена хранятся как Unix UTC, интерфейс показывает Europe/Moscow. Проверки доступа, гонок, отмены, обратной связи и удаления — pytest.</p>
+<h2>Диагностика</h2>
+<p>Каждый запрос записывается структурной JSON-строкой: время UTC, метод, шаблон маршрута, статус, длительность, Content-Length при наличии, код ошибки. Query string, тело запроса, токены и персональные данные не логируются. Uvicorn access log отключается при запуске через Docker и dev-скрипт.</p>
+<h2>Связанные артефакты</h2>
+<p>Полный контракт всех 15 операций, входных/выходных полей и ошибок: <a href="api.html">API</a>. Таблицы, типы, первичные и внешние ключи: <a href="data-model.html">модель данных</a>. <a href="architecture.html">ERD и Sequence</a>. <a href="acceptance.html">Критерии приёмки</a>.</p>
+<p class="source">Исходный документ: <a href="sources/backend-spec.md">backend-spec.md</a> · <a href="index.html">К составу пакета</a></p></main></div><footer>Есть что обсудить. Осталось найти с кем. · Пакет от 21 ноября 2026 года</footer></body></html>

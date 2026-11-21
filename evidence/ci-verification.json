@@ -1,0 +1,155 @@
+{
+  "verified_at_utc": "2026-11-20T15:07:19.984813+00:00",
+  "checks": [
+    {
+      "repository": "Fealserg/got-a-topic-backend",
+      "run_url": "https://github.com/Fealserg/got-a-topic-backend/actions/runs/44759178052",
+      "tested_commit": "d8a39790fef3120655a6ac1612ede22b200192cc",
+      "job_conclusions": [
+        {
+          "id": 136366821243,
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run pip install -r requirements.lock",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run python -m pytest tests -q",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run alembic upgrade head && alembic check",
+              "conclusion": "success"
+            },
+            {
+              "name": "Verify generated API contract",
+              "conclusion": "success"
+            },
+            {
+              "name": "Build container",
+              "conclusion": "success"
+            },
+            {
+              "name": "Verify container startup and persistence across restart",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "repository": "Fealserg/got-a-topic-frontend",
+      "run_url": "https://github.com/Fealserg/got-a-topic-frontend/actions/runs/44759224844",
+      "tested_commit": "f5ad987522fb0b929b481e5566f23208e166b161",
+      "job_conclusions": [
+        {
+          "id": 136366984642,
+          "conclusion": "success",
+          "steps": [
+            {
+              "name": "Set up job",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/setup-python@v5",
+              "conclusion": "success"
+            },
+            {
+              "name": "Install dependencies",
+              "conclusion": "success"
+            },
+            {
+              "name": "Verify shared API contract",
+              "conclusion": "success"
+            },
+            {
+              "name": "Unit tests, types and production build",
+              "conclusion": "success"
+            },
+            {
+              "name": "Install browser engines",
+              "conclusion": "success"
+            },
+            {
+              "name": "Start isolated test services",
+              "conclusion": "success"
+            },
+            {
+              "name": "Browser workflows",
+              "conclusion": "success"
+            },
+            {
+              "name": "Build container",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "conclusion": "skipped"
+            },
+            {
+              "name": "Verify frontend container proxy",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-python@v5",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "conclusion": "success"
+            },
+            {
+              "name": "Complete job",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

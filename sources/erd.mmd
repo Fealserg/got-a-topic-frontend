@@ -1,0 +1,65 @@
+erDiagram
+  USERS ||--o{ SESSIONS : authenticates
+  USERS ||--o{ INVITATIONS : sends
+  USERS ||--o{ INVITATIONS : receives
+  SLOTS ||--o{ INVITATIONS : schedules
+  TOPICS ||--o{ INVITATIONS : discusses
+  USERS ||--o{ BOOKINGS : occupies
+  SLOTS ||--o{ BOOKINGS : reserves
+  INVITATIONS ||--o{ BOOKINGS : confirms
+  USERS ||--o{ FEEDBACK : submits
+  INVITATIONS ||--o{ FEEDBACK : evaluates
+  USERS {
+    int id PK
+    string username UK
+    string password_hash
+    string name
+    string role
+    string company
+    string bio
+    json wanted
+    json offered
+    json availability
+    bool visible
+    bool is_admin
+    bool is_demo
+  }
+  SESSIONS {
+    string token_hash PK
+    int user_id FK
+    int expires_at
+  }
+  TOPICS {
+    int id PK
+    string name UK
+  }
+  SLOTS {
+    int id PK
+    int starts_at
+    int ends_at
+    string location
+    bool is_demo
+  }
+  INVITATIONS {
+    int id PK
+    int sender_id FK
+    int recipient_id FK
+    int slot_id FK
+    int topic_id FK
+    string message
+    string status
+    int created_at
+    int accepted_at
+  }
+  BOOKINGS {
+    int user_id PK,FK
+    int slot_id PK,FK
+    int invitation_id FK
+  }
+  FEEDBACK {
+    int id PK
+    int invitation_id FK
+    int user_id FK
+    bool happened
+    bool useful
+  }

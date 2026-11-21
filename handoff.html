@@ -1,0 +1,57 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Есть тема — материалы сдачи хакатона Analyst Days / 23"><title>Ссылки для сдачи · Есть тема</title><link rel="stylesheet" href="assets/style.css"></head><body><header><a class="brand" href="index.html">Есть тема<span style="color:#7caa88">.</span></a><span class="tag">Analyst Days / 23 · Материалы проекта</span></header><div class="layout"><aside><nav aria-label="Документы"><a href="index.html">Обзор пакета</a><a href="context-v1.html">Контекст v1</a><a href="business.html">Бизнес-потребность</a><a href="backend-spec.html">ТЗ Backend</a><a href="frontend-spec.html">ТЗ Frontend</a><a href="api.html">API и Swagger</a><a href="data-model.html">Модель данных</a><a href="architecture.html">ERD и Sequence</a><a href="landing.html">Лендинг</a><a href="acceptance.html">Приёмка</a><a href="validation.html">Проверки</a><a href="prompts.html">Использованные задания</a><a href="context-v0.html">Контекст v0</a><a href="concept.html">Концепция</a><a href="development-prompt.html">Промпт разработки</a><a href="idea-generation-prompt.html">Промпт поиска идей</a><a href="ux-guide.html">Руководство UX</a><a href="demo-script.html">Речь для демо</a><a href="readiness.html">Готовность к сдаче</a><a href="handoff.html" aria-current="page">Ссылки для сдачи</a></nav></aside><main id="main"><h1>Ссылки и порядок сдачи</h1>
+<p>Подготовлено по <a href="https://ad23-hackathon-info.website.yandexcloud.net/artifacts/">требованиям организаторов</a>. Видео исключено пользователем. Ссылки передаются в единую форму до 12:00 второго дня по инструкции организаторов; это требование страницы, а не подтверждение своевременной отправки. Прямой ссылки на форму на странице нет.</p>
+<h2>Поля формы</h2>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Значение</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Название</td>
+<td>Есть тема</td>
+</tr>
+<tr>
+<td>Описание</td>
+<td>Нетворкинг по интересам на конференции: запрос и опыт, объяснимый подбор, согласованные 15-минутные встречи</td>
+</tr>
+<tr>
+<td>Приложение и лендинг</td>
+<td><a href="https://got-a-topic-frontend.isodomain.tech/">https://got-a-topic-frontend.isodomain.tech/</a></td>
+</tr>
+<tr>
+<td>Swagger backend</td>
+<td><a href="https://got-a-topic-api.isodomain.tech/api/docs">https://got-a-topic-api.isodomain.tech/api/docs</a></td>
+</tr>
+<tr>
+<td>Swagger через frontend</td>
+<td><a href="https://got-a-topic-frontend.isodomain.tech/api/docs">https://got-a-topic-frontend.isodomain.tech/api/docs</a></td>
+</tr>
+<tr>
+<td>Репозиторий Frontend</td>
+<td><a href="https://github.com/Fealserg/got-a-topic-frontend">https://github.com/Fealserg/got-a-topic-frontend</a></td>
+</tr>
+<tr>
+<td>Репозиторий Backend</td>
+<td><a href="https://github.com/Fealserg/got-a-topic-backend">https://github.com/Fealserg/got-a-topic-backend</a></td>
+</tr>
+<tr>
+<td>Документы</td>
+<td>Публичная ссылка на GitHub Pages или облачную папку с комплектом; публикацию проверить без входа</td>
+</tr>
+<tr>
+<td>Видео</td>
+<td>Не подготовлено по поручению пользователя</td>
+</tr>
+</tbody></table></div>
+<h2>Единый архив</h2>
+<p><code>got-a-topic-submission.zip</code> содержит весь <code>submission/</code>: HTML и навигацию, источники, схемы, OpenAPI, снимки, сценарий речи, доказательства и два исходных кодовых архива. После распаковки открыть <code>index.html</code>. Контрольная сумма — в соседнем файле <code>.sha256</code>, внутренние SHA-256 — в <code>manifest.json</code>.</p>
+<p>Исходники: <a href="code/frontend-source.zip">frontend-source.zip</a>, <a href="code/backend-source.zip">backend-source.zip</a>. Их происхождение описано в <a href="evidence/release-provenance.json">release-provenance.json</a>. Внутри архивов есть README и Dockerfile. Исходники не содержат .env, паролей участников, сессий, SQLite, node_modules и .git. <code>.env.example</code> содержит только пример конфигурации.</p>
+<h2>Публикация документов</h2>
+<p>Загрузить ZIP и распакованный <code>submission/</code> в облачную папку с открытым чтением и скачиванием. Проверить доступ без авторизации. Если просмотрщик не исполняет HTML, документы читаются в <code>sources/</code>, а навигация работает после скачивания ZIP. Для просмотра прямо в браузере разместить содержимое <code>submission/</code> на GitHub Pages; <code>.nojekyll</code> уже включён.</p>
+<p>Публичные репозитории кода не заменяют ссылку на документы в GitHub Pages/облачном диске. Комплект не считается опубликованным только потому, что файлы собраны локально. Отправка формы этим действием не выполняется.</p>
+<h2>Показ демо</h2>
+<p><a href="demo-script.html">Речь в порядке четырёх блоков</a>, <a href="acceptance.html">порядок проверки встречи</a>. Пароли оставленных тестовых аккаунтов находятся только у владельца в отдельном локальном файле и в материалы не включаются. Для нового назначения нужны будущие интервалы; историческую тестовую встречу можно показать в «Моих встречах».</p>
+<p>Продуктовый эффект не измерен. Сохранность SQLite при полном пересоздании backend на RelaxDev не подтверждена. Обновление frontend не требует пересборки backend. Не проверять постоянство данных разрушительным редеплоем без резервной копии.</p>
+<p class="source">Исходный документ: <a href="sources/handoff.md">handoff.md</a> · <a href="index.html">К составу пакета</a></p></main></div><footer>Есть что обсудить. Осталось найти с кем. · Пакет от 21 ноября 2026 года</footer></body></html>

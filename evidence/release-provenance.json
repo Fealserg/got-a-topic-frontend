@@ -1,0 +1,131 @@
+{
+  "checked_at_utc": "2026-11-21T10:27:05.980Z",
+  "repositories": {
+    "frontend": {
+      "url": "https://github.com/Fealserg/got-a-topic-frontend",
+      "commit": "00f9cde514617aa5bddf09b127ec9b34eb049ac7",
+      "public_head_verified": true
+    },
+    "backend": {
+      "url": "https://github.com/Fealserg/got-a-topic-backend",
+      "commit": "faecc4fee2a4376867a291e22b49f2ff3e2454df",
+      "public_head_verified": true
+    }
+  },
+  "new_frontend_ci": {
+    "url": "https://github.com/Fealserg/got-a-topic-frontend/actions/runs/44894127596",
+    "head_sha": "fef8e74adc23d7952bcad3baccfe79f8d97e9f9f",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "id": 136816013017,
+        "name": "frontend",
+        "status": "completed",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-node@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@v5",
+            "conclusion": "success"
+          },
+          {
+            "name": "Install dependencies",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify shared API contract",
+            "conclusion": "success"
+          },
+          {
+            "name": "Unit tests, types and production build",
+            "conclusion": "success"
+          },
+          {
+            "name": "Install browser engines",
+            "conclusion": "success"
+          },
+          {
+            "name": "Start isolated test services",
+            "conclusion": "success"
+          },
+          {
+            "name": "Browser workflows",
+            "conclusion": "success"
+          },
+          {
+            "name": "Build container",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/upload-artifact@v4",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Verify frontend container proxy",
+            "conclusion": "success"
+          },
+          {
+            "name": "Verify public image in frontend container",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@v5",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-node@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@v4",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      }
+    ],
+    "scope": "Tested application release; latest subsequent commit only updates docs/submission.md [skip ci]"
+  },
+  "production": {
+    "frontend": "https://got-a-topic-frontend.isodomain.tech/",
+    "delivery": "ZIP uploaded by owner to GitRelax/RelaxDev",
+    "new_design_and_image_http_checked": true,
+    "exact_container_commit_verified": false
+  },
+  "local_checks": {
+    "backend_tests": 25,
+    "proxy_tests": 10,
+    "typecheck": "passed",
+    "production_build": "passed",
+    "docker": "Not run locally; container checks passed in new GitHub CI"
+  },
+  "documents_publication": {
+    "confirmed": false,
+    "scope": "Local package ready; cloud disk or GitHub Pages publication is a separate final step"
+  },
+  "form_submitted": false,
+  "video_included": false
+}

@@ -1,0 +1,427 @@
+[
+  {
+    "name": "slots",
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": true,
+        "unique": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "starts_at",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "ends_at",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "location",
+        "type": "VARCHAR(150)",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "is_demo",
+        "type": "BOOLEAN",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": []
+      }
+    ],
+    "unique_constraints": []
+  },
+  {
+    "name": "topics",
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": true,
+        "unique": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "name",
+        "type": "VARCHAR(100)",
+        "nullable": false,
+        "primary_key": false,
+        "unique": true,
+        "foreign_keys": []
+      }
+    ],
+    "unique_constraints": [
+      [
+        "name"
+      ]
+    ]
+  },
+  {
+    "name": "users",
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": true,
+        "unique": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "username",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": false,
+        "unique": true,
+        "foreign_keys": []
+      },
+      {
+        "name": "password_hash",
+        "type": "VARCHAR",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "name",
+        "type": "VARCHAR(80)",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "role",
+        "type": "VARCHAR(100)",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "company",
+        "type": "VARCHAR(100)",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "bio",
+        "type": "VARCHAR(500)",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "wanted",
+        "type": "JSON",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "offered",
+        "type": "JSON",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "availability",
+        "type": "JSON",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "visible",
+        "type": "BOOLEAN",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "is_admin",
+        "type": "BOOLEAN",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "is_demo",
+        "type": "BOOLEAN",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": []
+      }
+    ],
+    "unique_constraints": [
+      [
+        "username"
+      ]
+    ]
+  },
+  {
+    "name": "invitations",
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": true,
+        "unique": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "sender_id",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": [
+          {
+            "target": "users.id",
+            "ondelete": "CASCADE"
+          }
+        ]
+      },
+      {
+        "name": "recipient_id",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": [
+          {
+            "target": "users.id",
+            "ondelete": "CASCADE"
+          }
+        ]
+      },
+      {
+        "name": "slot_id",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": [
+          {
+            "target": "slots.id",
+            "ondelete": null
+          }
+        ]
+      },
+      {
+        "name": "topic_id",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": [
+          {
+            "target": "topics.id",
+            "ondelete": null
+          }
+        ]
+      },
+      {
+        "name": "message",
+        "type": "VARCHAR(300)",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "status",
+        "type": "VARCHAR(20)",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "created_at",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "accepted_at",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": []
+      }
+    ],
+    "unique_constraints": []
+  },
+  {
+    "name": "sessions",
+    "columns": [
+      {
+        "name": "token_hash",
+        "type": "VARCHAR(64)",
+        "nullable": false,
+        "primary_key": true,
+        "unique": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "user_id",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": [
+          {
+            "target": "users.id",
+            "ondelete": "CASCADE"
+          }
+        ]
+      },
+      {
+        "name": "expires_at",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": []
+      }
+    ],
+    "unique_constraints": []
+  },
+  {
+    "name": "bookings",
+    "columns": [
+      {
+        "name": "user_id",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": true,
+        "unique": false,
+        "foreign_keys": [
+          {
+            "target": "users.id",
+            "ondelete": "CASCADE"
+          }
+        ]
+      },
+      {
+        "name": "slot_id",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": true,
+        "unique": false,
+        "foreign_keys": [
+          {
+            "target": "slots.id",
+            "ondelete": null
+          }
+        ]
+      },
+      {
+        "name": "invitation_id",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": [
+          {
+            "target": "invitations.id",
+            "ondelete": "CASCADE"
+          }
+        ]
+      }
+    ],
+    "unique_constraints": []
+  },
+  {
+    "name": "feedback",
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": true,
+        "unique": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "invitation_id",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": [
+          {
+            "target": "invitations.id",
+            "ondelete": "CASCADE"
+          }
+        ]
+      },
+      {
+        "name": "user_id",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": [
+          {
+            "target": "users.id",
+            "ondelete": "CASCADE"
+          }
+        ]
+      },
+      {
+        "name": "happened",
+        "type": "BOOLEAN",
+        "nullable": false,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "useful",
+        "type": "BOOLEAN",
+        "nullable": true,
+        "primary_key": false,
+        "unique": false,
+        "foreign_keys": []
+      }
+    ],
+    "unique_constraints": [
+      [
+        "invitation_id",
+        "user_id"
+      ]
+    ]
+  }
+]

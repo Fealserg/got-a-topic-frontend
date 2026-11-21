@@ -1,0 +1,383 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Есть тема — материалы сдачи хакатона Analyst Days / 23"><title>Модель данных · Есть тема</title><link rel="stylesheet" href="assets/style.css"></head><body><header><a class="brand" href="index.html">Есть тема<span style="color:#7caa88">.</span></a><span class="tag">Analyst Days / 23 · Материалы проекта</span></header><div class="layout"><aside><nav aria-label="Документы"><a href="index.html">Обзор пакета</a><a href="context-v1.html">Контекст v1</a><a href="business.html">Бизнес-потребность</a><a href="backend-spec.html">ТЗ Backend</a><a href="frontend-spec.html">ТЗ Frontend</a><a href="api.html">API и Swagger</a><a href="data-model.html" aria-current="page">Модель данных</a><a href="architecture.html">ERD и Sequence</a><a href="landing.html">Лендинг</a><a href="acceptance.html">Приёмка</a><a href="validation.html">Проверки</a><a href="prompts.html">Использованные задания</a><a href="context-v0.html">Контекст v0</a><a href="concept.html">Концепция</a><a href="development-prompt.html">Промпт разработки</a><a href="idea-generation-prompt.html">Промпт поиска идей</a><a href="ux-guide.html">Руководство UX</a><a href="demo-script.html">Речь для демо</a><a href="readiness.html">Готовность к сдаче</a><a href="handoff.html">Ссылки для сдачи</a></nav></aside><main id="main"><h1>Таблицы и модель данных</h1>
+<p>Схема сформирована из SQLAlchemy metadata текущего backend. Миграция Alembic 001 описывает те же семь таблиц. <a href="assets/erd.svg">Отрисованная ERD</a>, <a href="sources/erd.mmd">исходник Mermaid</a>, <a href="architecture.html">архитектура и процесс</a>.</p>
+<h2>slots</h2>
+<p>Общий интервал и точка встречи.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Null</th>
+<th>Ключ / связь</th>
+<th>Значение</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>INTEGER</td>
+<td>Нет</td>
+<td>PK</td>
+<td>Идентификатор записи</td>
+</tr>
+<tr>
+<td>starts_at</td>
+<td>INTEGER</td>
+<td>Нет</td>
+<td>—</td>
+<td>Начало, Unix UTC</td>
+</tr>
+<tr>
+<td>ends_at</td>
+<td>INTEGER</td>
+<td>Нет</td>
+<td>—</td>
+<td>Окончание, Unix UTC</td>
+</tr>
+<tr>
+<td>location</td>
+<td>VARCHAR(150)</td>
+<td>Нет</td>
+<td>—</td>
+<td>Точка встречи</td>
+</tr>
+<tr>
+<td>is_demo</td>
+<td>BOOLEAN</td>
+<td>Нет</td>
+<td>—</td>
+<td>Исключение синтетического профиля/слота из реального контекста</td>
+</tr>
+</tbody></table></div>
+<h2>topics</h2>
+<p>Справочник профессиональных тем.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Null</th>
+<th>Ключ / связь</th>
+<th>Значение</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>INTEGER</td>
+<td>Нет</td>
+<td>PK</td>
+<td>Идентификатор записи</td>
+</tr>
+<tr>
+<td>name</td>
+<td>VARCHAR(100)</td>
+<td>Нет</td>
+<td>UNIQUE</td>
+<td>Имя участника / название темы</td>
+</tr>
+</tbody></table></div>
+<p>Уникальные ограничения: (name).</p>
+<h2>users</h2>
+<p>Аккаунт и профиль участника или организатора.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Null</th>
+<th>Ключ / связь</th>
+<th>Значение</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>INTEGER</td>
+<td>Нет</td>
+<td>PK</td>
+<td>Идентификатор записи</td>
+</tr>
+<tr>
+<td>username</td>
+<td>VARCHAR(32)</td>
+<td>Нет</td>
+<td>UNIQUE</td>
+<td>Уникальный логин</td>
+</tr>
+<tr>
+<td>password_hash</td>
+<td>VARCHAR</td>
+<td>Нет</td>
+<td>—</td>
+<td>Соль и хеш scrypt; не отдаётся API</td>
+</tr>
+<tr>
+<td>name</td>
+<td>VARCHAR(80)</td>
+<td>Нет</td>
+<td>—</td>
+<td>Имя участника / название темы</td>
+</tr>
+<tr>
+<td>role</td>
+<td>VARCHAR(100)</td>
+<td>Нет</td>
+<td>—</td>
+<td>Профессиональная роль; не право доступа</td>
+</tr>
+<tr>
+<td>company</td>
+<td>VARCHAR(100)</td>
+<td>Нет</td>
+<td>—</td>
+<td>Компания, необязательно</td>
+</tr>
+<tr>
+<td>bio</td>
+<td>VARCHAR(500)</td>
+<td>Нет</td>
+<td>—</td>
+<td>Описание опыта и запроса</td>
+</tr>
+<tr>
+<td>wanted</td>
+<td>JSON</td>
+<td>Нет</td>
+<td>—</td>
+<td>JSON-массив ID желаемых тем</td>
+</tr>
+<tr>
+<td>offered</td>
+<td>JSON</td>
+<td>Нет</td>
+<td>—</td>
+<td>JSON-массив ID тем опыта</td>
+</tr>
+<tr>
+<td>availability</td>
+<td>JSON</td>
+<td>Нет</td>
+<td>—</td>
+<td>JSON-массив ID выбранных слотов</td>
+</tr>
+<tr>
+<td>visible</td>
+<td>BOOLEAN</td>
+<td>Нет</td>
+<td>—</td>
+<td>Добровольное участие в подборе</td>
+</tr>
+<tr>
+<td>is_admin</td>
+<td>BOOLEAN</td>
+<td>Нет</td>
+<td>—</td>
+<td>Право организатора</td>
+</tr>
+<tr>
+<td>is_demo</td>
+<td>BOOLEAN</td>
+<td>Нет</td>
+<td>—</td>
+<td>Исключение синтетического профиля/слота из реального контекста</td>
+</tr>
+</tbody></table></div>
+<p>Уникальные ограничения: (username).</p>
+<h2>invitations</h2>
+<p>Предложение встречи и текущее состояние.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Null</th>
+<th>Ключ / связь</th>
+<th>Значение</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>INTEGER</td>
+<td>Нет</td>
+<td>PK</td>
+<td>Идентификатор записи</td>
+</tr>
+<tr>
+<td>sender_id</td>
+<td>INTEGER</td>
+<td>Нет</td>
+<td>FK → users.id; ON DELETE CASCADE</td>
+<td>Отправитель приглашения</td>
+</tr>
+<tr>
+<td>recipient_id</td>
+<td>INTEGER</td>
+<td>Нет</td>
+<td>FK → users.id; ON DELETE CASCADE</td>
+<td>Получатель приглашения</td>
+</tr>
+<tr>
+<td>slot_id</td>
+<td>INTEGER</td>
+<td>Нет</td>
+<td>FK → slots.id</td>
+<td>Интервал встречи</td>
+</tr>
+<tr>
+<td>topic_id</td>
+<td>INTEGER</td>
+<td>Нет</td>
+<td>FK → topics.id</td>
+<td>Тема встречи</td>
+</tr>
+<tr>
+<td>message</td>
+<td>VARCHAR(300)</td>
+<td>Нет</td>
+<td>—</td>
+<td>Необязательное сообщение приглашения</td>
+</tr>
+<tr>
+<td>status</td>
+<td>VARCHAR(20)</td>
+<td>Нет</td>
+<td>—</td>
+<td>pending, accepted, declined, cancelled или conflict</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>INTEGER</td>
+<td>Нет</td>
+<td>—</td>
+<td>Создание, Unix UTC</td>
+</tr>
+<tr>
+<td>accepted_at</td>
+<td>INTEGER</td>
+<td>Да</td>
+<td>—</td>
+<td>Принятие, Unix UTC; null до принятия</td>
+</tr>
+</tbody></table></div>
+<h2>sessions</h2>
+<p>Серверная сессия без исходного токена.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Null</th>
+<th>Ключ / связь</th>
+<th>Значение</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>token_hash</td>
+<td>VARCHAR(64)</td>
+<td>Нет</td>
+<td>PK</td>
+<td>SHA-256 случайного токена; исходный токен не хранится</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>INTEGER</td>
+<td>Нет</td>
+<td>FK → users.id; ON DELETE CASCADE</td>
+<td>Участник / владелец записи</td>
+</tr>
+<tr>
+<td>expires_at</td>
+<td>INTEGER</td>
+<td>Нет</td>
+<td>—</td>
+<td>Срок сессии, Unix UTC</td>
+</tr>
+</tbody></table></div>
+<h2>bookings</h2>
+<p>Занятость одного пользователя на одном слоте.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Null</th>
+<th>Ключ / связь</th>
+<th>Значение</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>user_id</td>
+<td>INTEGER</td>
+<td>Нет</td>
+<td>PK; FK → users.id; ON DELETE CASCADE</td>
+<td>Участник / владелец записи</td>
+</tr>
+<tr>
+<td>slot_id</td>
+<td>INTEGER</td>
+<td>Нет</td>
+<td>PK; FK → slots.id</td>
+<td>Интервал встречи</td>
+</tr>
+<tr>
+<td>invitation_id</td>
+<td>INTEGER</td>
+<td>Нет</td>
+<td>FK → invitations.id; ON DELETE CASCADE</td>
+<td>Связанное приглашение</td>
+</tr>
+</tbody></table></div>
+<h2>feedback</h2>
+<p>Один собственный отзыв участника о встрече.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Поле</th>
+<th>Тип</th>
+<th>Null</th>
+<th>Ключ / связь</th>
+<th>Значение</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>INTEGER</td>
+<td>Нет</td>
+<td>PK</td>
+<td>Идентификатор записи</td>
+</tr>
+<tr>
+<td>invitation_id</td>
+<td>INTEGER</td>
+<td>Нет</td>
+<td>FK → invitations.id; ON DELETE CASCADE</td>
+<td>Связанное приглашение</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>INTEGER</td>
+<td>Нет</td>
+<td>FK → users.id; ON DELETE CASCADE</td>
+<td>Участник / владелец записи</td>
+</tr>
+<tr>
+<td>happened</td>
+<td>BOOLEAN</td>
+<td>Нет</td>
+<td>—</td>
+<td>Подтверждение факта одним участником</td>
+</tr>
+<tr>
+<td>useful</td>
+<td>BOOLEAN</td>
+<td>Да</td>
+<td>—</td>
+<td>Личная оценка полезности; null без оценки</td>
+</tr>
+</tbody></table></div>
+<p>Уникальные ограничения: (invitation_id, user_id).</p>
+<h2>Связи и целостность</h2>
+<p>В ERD две связи users → invitations означают отправителя и получателя. Одна accepted-встреча создаёт ровно две bookings, по одной на участника. Составной PK bookings(user_id, slot_id) не позволяет занять одно время дважды. Отзыв уникален по (invitation_id, user_id). Внешние ключи SQLite включены через PRAGMA foreign_keys=ON.</p>
+<p>wanted, offered и availability — JSON, а не таблицы связей. Ссылочная целостность элементов этих массивов обеспечивается серверной валидацией, не FK. Статусы, длительность 900 секунд и непересечение слотов проверяет backend; миграция не создаёт SQL CHECK для этих правил. expired вычисляется при чтении просроченного pending и не хранится как отдельный статус.</p>
+<p>Удаление пользователя каскадно удаляет его сессии, связанные приглашения, занятость и отзывы, включая связанные записи другого участника. UI предупреждает об этом. Удаление тем и слотов в MVP не реализовано.</p>
+<h2>Хранение</h2>
+<p>SQLAlchemy работает с SQLite, Alembic управляет схемой, включены WAL и busy_timeout. Один worker и экземпляр, записи через BEGIN IMMEDIATE. Файл production задан как /data/pereryv.db; наличие постоянного тома и сохранность при полном редеплое RelaxDev не подтверждены. Реальная БД и данные участников в комплект не входят.</p>
+<p class="source">Исходный документ: <a href="sources/data-model.md">data-model.md</a> · <a href="index.html">К составу пакета</a></p></main></div><footer>Есть что обсудить. Осталось найти с кем. · Пакет от 21 ноября 2026 года</footer></body></html>

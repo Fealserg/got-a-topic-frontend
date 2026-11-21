@@ -1,0 +1,40 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Есть тема — материалы сдачи хакатона Analyst Days / 23"><title>Лендинг · Есть тема</title><link rel="stylesheet" href="assets/style.css"></head><body><header><a class="brand" href="index.html">Есть тема<span style="color:#7caa88">.</span></a><span class="tag">Analyst Days / 23 · Материалы проекта</span></header><div class="layout"><aside><nav aria-label="Документы"><a href="index.html">Обзор пакета</a><a href="context-v1.html">Контекст v1</a><a href="business.html">Бизнес-потребность</a><a href="backend-spec.html">ТЗ Backend</a><a href="frontend-spec.html">ТЗ Frontend</a><a href="api.html">API и Swagger</a><a href="data-model.html">Модель данных</a><a href="architecture.html">ERD и Sequence</a><a href="landing.html" aria-current="page">Лендинг</a><a href="acceptance.html">Приёмка</a><a href="validation.html">Проверки</a><a href="prompts.html">Использованные задания</a><a href="context-v0.html">Контекст v0</a><a href="concept.html">Концепция</a><a href="development-prompt.html">Промпт разработки</a><a href="idea-generation-prompt.html">Промпт поиска идей</a><a href="ux-guide.html">Руководство UX</a><a href="demo-script.html">Речь для демо</a><a href="readiness.html">Готовность к сдаче</a><a href="handoff.html">Ссылки для сдачи</a></nav></aside><main id="main"><h1>Лендинг продукта: утверждённый дизайн</h1>
+<p><a href="https://got-a-topic-frontend.isodomain.tech/">Открыть «Есть тема»</a>. Четыре блока встроены в приложение. Снимки сделаны с опубликованной версии 21 ноября 2026 года; это работающий интерфейс, а не отдельный прототип.</p>
+<div class="table-scroll"><table>
+<thead>
+<tr>
+<th>Блок</th>
+<th>Ценность и целевое действие</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Первый экран</td>
+<td>«Есть что обсудить. Осталось найти с кем.» Люди в разговоре, короткое обещание пользы; «Как это работает» ведёт к объяснению</td>
+</tr>
+<tr>
+<td>Совпадение по смыслу</td>
+<td>У одного вопрос, у другого опыт. Карточки сближаются по скроллу; общая тема и кнопка «Встретимся на перерыве?» ведут к подбору</td>
+</tr>
+<tr>
+<td>Ваша тема. Ваши люди.</td>
+<td>Рекомендации с объяснением и общим временем; поиск и темы. Для гостя — предложение создать профиль</td>
+</tr>
+<tr>
+<td>А с вами о чём поговорить?</td>
+<td>Ценность собственного опыта; реальная регистрация или редактирование карточки. Подвал возвращает в начало</td>
+</tr>
+</tbody></table></div>
+<p>На desktop секции занимают минимум экран; при недостатке места растут по содержимому. Сцена закрепляется, когда помещается в окно. Жест останавливается на границе следующего блока; кнопки переходят непосредственно к цели. Движение обратимо и замирает без прокрутки; reduced motion отключает закрепление и анимацию. Основные описания увеличены до 16–18 px.</p>
+<h2>Снимки опубликованного сайта</h2>
+<p><img src="assets/landing-desktop.png" alt="Первый экран на компьютере"></p>
+<p><img src="assets/story-desktop.png" alt="Объясняющая сцена"></p>
+<p><img src="assets/create-desktop.png" alt="Регистрация в четвёртом блоке"></p>
+<p><img src="assets/landing-mobile.png" alt="Первый экран на телефоне"></p>
+<h2>Доступные участники после тестовой встречи</h2>
+<p><img src="assets/participants-desktop.png" alt="Текущий подбор в аккаунте Ивана"></p>
+<p>Снимок сделан после назначения встречи: состав рекомендаций меняется с занятостью, временем и ограничением повторных приглашений. В момент снимка Ивану показана Таисия. Историческое появление Эльдара перед отправкой подтверждено сценарием приёмки.</p>
+<h2>Подтверждение и границы</h2>
+<p>Проверены ширины 1440, 1024, 768, 390 и 320 px: горизонтального переполнения нет, изображение загружается. Маршрут <code>/images/conversation-hero.webp</code> отвечает 200. Исправление Docker добавляет папку <code>public</code> в финальный образ. Результаты — <a href="evidence/public-checks.json">проверки публичной версии</a>.</p>
+<p>Изображение создано с помощью ИИ и утверждено пользователем. Анна и Михаил в анимации — иллюстрация механизма, не реальные рекомендации. Тестовые Иван, Эльдар и Таисия участвуют в настоящем API-сценарии; их технический тест не доказывает полезность для реальных участников. Конверсия лендинга и продуктовый эффект не измерены.</p>
+<p><a href="frontend-spec.html">ТЗ Frontend</a>, <a href="acceptance.html">приёмка</a>, <a href="demo-script.html">сценарий выступления</a>.</p>
+<p class="source">Исходный документ: <a href="sources/landing.md">landing.md</a> · <a href="index.html">К составу пакета</a></p></main></div><footer>Есть что обсудить. Осталось найти с кем. · Пакет от 21 ноября 2026 года</footer></body></html>
