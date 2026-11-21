@@ -58,6 +58,8 @@
 <p>После проверенного коммита опубликован только документационный <code>00f9cde</code>, обновляющий <code>docs/submission.md</code> с <code>[skip ci]</code>. Он не меняет код приложения. Точные SHA, шаги и публичный HEAD зафиксированы в <a href="evidence/release-provenance.json">release-provenance.json</a>.</p>
 <h2>Исторический GitHub CI</h2>
 <p>Backend: <a href="https://github.com/Fealserg/got-a-topic-backend/actions/runs/44759178052">запуск 44759178052</a>. Frontend: <a href="https://github.com/Fealserg/got-a-topic-frontend/actions/runs/44759224844">запуск 44759224844</a>. Проверенные коммиты — <a href="evidence/ci-verification.json">ci-verification.json</a>. Они предшествуют новому дизайну и не подтверждают новый commit. Сведения о текущей публикации исходников — <a href="evidence/release-provenance.json">release-provenance.json</a>.</p>
+<h2>Публикация комплекта</h2>
+<p>Документы опубликованы на <a href="https://fealserg.github.io/got-a-topic-frontend/">GitHub Pages</a> из ветки gh-pages, корень. Проверено в отдельном браузерном контексте без авторизации: 20 документов, ERD/Sequence, снимок, два исходных архива и полный ZIP отвечают HTTP 200. На 390 px горизонтального переполнения главной страницы нет. <a href="evidence/pages-publication.json">Свидетельство публикации</a>. Форма организаторам не отправлялась.</p>
 <h2>Что не подтверждено</h2>
 <ul>
 <li>Постоянство SQLite при полном пересоздании backend-контейнера, наличие volume <code>/data</code>, резервные копии.</li>

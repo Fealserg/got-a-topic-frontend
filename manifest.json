@@ -1,10 +1,11 @@
 {
   "title": "Есть тема — комплект сдачи без видео",
-  "created_at_utc": "2026-11-21T10:28:16.745Z",
+  "created_at_utc": "2026-11-21T10:52:46.312Z",
   "as_of_public_checks_utc": "2026-11-21T10:16:19.684Z",
   "requirements_url": "https://ad23-hackathon-info.website.yandexcloud.net/artifacts/",
   "video_included": false,
-  "publication_confirmed": false,
+  "publication_confirmed": true,
+  "published_url": "https://fealserg.github.io/got-a-topic-frontend/",
   "repositories": {
     "backend": {
       "url": "https://github.com/Fealserg/got-a-topic-backend",
@@ -46,7 +47,7 @@
     },
     {
       "path": "project-history.md",
-      "sha256": "fcfff3351b99a899abb5ce40ee74526587590ba0bcdf86b766a77732e5442f2b"
+      "sha256": "b355d5f04baffc91b3d8a787903a1023dd082b41f00845a3c110ff94dc899da8"
     },
     {
       "path": "development-prompt.md",
@@ -118,7 +119,7 @@
     },
     {
       "path": "scripts/build-submission.cjs",
-      "sha256": "00b99d71da8fc38578cb0de954633643491a469773a6fb0c6aa97bb7af4259d0"
+      "sha256": "18e0c8c7a498d404b7ade3c4ca4087fdb7dfe3b9514d2c259460573ddc37d9c2"
     },
     {
       "path": "scripts/validate-submission.py",
@@ -151,8 +152,8 @@
     },
     {
       "path": "README.txt",
-      "bytes": 1047,
-      "sha256": "9744a6458815df3e5ca0c360c0dec9809e5db86bb41eacaff7c73827b7f1cb64"
+      "bytes": 943,
+      "sha256": "3ab36b3412ed6862f44eca83dc35923a251607cfc5c269dfc0cfb4aee840832d"
     },
     {
       "path": "acceptance.html",
@@ -290,6 +291,11 @@
       "sha256": "e2b575f1b2872b4519a6dd2d5c1fc68e88b2f06b8daa14e07869df1b3b25a9f4"
     },
     {
+      "path": "evidence/pages-publication.json",
+      "bytes": 508,
+      "sha256": "c024db67db806a1e6c7421f161286f7198b73ba27509b2e4b3e317a1ee87c3fd"
+    },
+    {
       "path": "evidence/production-scenario.json",
       "bytes": 2842,
       "sha256": "c41d54340cebf3ddbe3c49b290dd9d0f78ebbe12216f89847582a9b43a0c95f4"
@@ -301,8 +307,8 @@
     },
     {
       "path": "evidence/release-provenance.json",
-      "bytes": 3838,
-      "sha256": "84cebebc171103249ff4b14c2efc125c0cfc958715ef1cc9b048d48650c9fade"
+      "bytes": 3909,
+      "sha256": "60aca53e1ca1d40735cda60208c44f550593391235a42d8892d9c21cd10c61ac"
     },
     {
       "path": "frontend-spec.html",
@@ -311,8 +317,8 @@
     },
     {
       "path": "handoff.html",
-      "bytes": 7567,
-      "sha256": "077b3dbc0baa5d420d712ee56aa60831d71893ebfd4d8a6ae636331c8621a2ac"
+      "bytes": 8069,
+      "sha256": "8fcbac5d2e0da4c21cccf52b86a113d26a98b508563f458783eb0e0e7859544e"
     },
     {
       "path": "idea-generation-prompt.html",
@@ -321,8 +327,8 @@
     },
     {
       "path": "index.html",
-      "bytes": 8766,
-      "sha256": "3d359794eb2ec1341d109624ec8abcb6a8aa6d6ea60ae362d89d728282e5e681"
+      "bytes": 8837,
+      "sha256": "84dabdc5cdeb98c122eacdb3821f454a1ea82c1e46fced6271167a81d11eecdd"
     },
     {
       "path": "landing.html",
@@ -341,8 +347,8 @@
     },
     {
       "path": "readiness.html",
-      "bytes": 7987,
-      "sha256": "7dcc3ff580ca0e059cc7d8b67a2833a4a045b4cf2290d044eefede0372d48ed8"
+      "bytes": 7976,
+      "sha256": "19c1eb91d92c4cf5414b63fb84cb74ce97ce177cea7380333af0073f8ac858e1"
     },
     {
       "path": "sources/acceptance.md",
@@ -411,8 +417,8 @@
     },
     {
       "path": "sources/handoff.md",
-      "bytes": 4659,
-      "sha256": "62b7854ca5f6da5d720adc237f90ce5b35c1f55ea0e686ae82fd74ec6de784bb"
+      "bytes": 5057,
+      "sha256": "087a3401d211a7e518bd1150a59b1d1c02f81667aa556cff9927daace662718b"
     },
     {
       "path": "sources/idea-generation-prompt.md",
@@ -436,8 +442,8 @@
     },
     {
       "path": "sources/readiness.md",
-      "bytes": 5244,
-      "sha256": "7f271187555e0bdab5f94fa3633c3d24c5e669779d385a1f09ef2364c2db9e7d"
+      "bytes": 5222,
+      "sha256": "14eb8fbda5285fdd994607cf827e7624f86375bb4ebeef3c5ed5666f16d3911a"
     },
     {
       "path": "sources/sequence.mmd",
@@ -451,8 +457,8 @@
     },
     {
       "path": "sources/validation.md",
-      "bytes": 9580,
-      "sha256": "dfdae61c6f8824a2f15637f5dffb8316b913647ea464e4e48c49105aaf549003"
+      "bytes": 10292,
+      "sha256": "11f1da67f4449de2f57b12253a7c9435150ca7e8786dd0b2d7e436d3a7c1df8b"
     },
     {
       "path": "ux-guide.html",
@@ -461,8 +467,8 @@
     },
     {
       "path": "validation.html",
-      "bytes": 12292,
-      "sha256": "3d34f5d84726d440fd43c51221ab932991aefe52792ee9b57c245222019616b3"
+      "bytes": 13034,
+      "sha256": "2edc2c64219e575e3acf1c2f1496a254ccc522d88e00a1674eefeb7809b941ea"
     }
   ]
 }

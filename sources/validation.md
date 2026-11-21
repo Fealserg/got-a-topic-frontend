@@ -54,6 +54,10 @@ HTML, исходники, готовые SVG, OpenAPI, актуальные сн
 
 Backend: [запуск 44759178052](https://github.com/Fealserg/got-a-topic-backend/actions/runs/44759178052). Frontend: [запуск 44759224844](https://github.com/Fealserg/got-a-topic-frontend/actions/runs/44759224844). Проверенные коммиты — [ci-verification.json](../evidence/ci-verification.json). Они предшествуют новому дизайну и не подтверждают новый commit. Сведения о текущей публикации исходников — [release-provenance.json](../evidence/release-provenance.json).
 
+## Публикация комплекта
+
+Документы опубликованы на [GitHub Pages](https://fealserg.github.io/got-a-topic-frontend/) из ветки gh-pages, корень. Проверено в отдельном браузерном контексте без авторизации: 20 документов, ERD/Sequence, снимок, два исходных архива и полный ZIP отвечают HTTP 200. На 390 px горизонтального переполнения главной страницы нет. [Свидетельство публикации](../evidence/pages-publication.json). Форма организаторам не отправлялась.
+
 ## Что не подтверждено
 
 - Постоянство SQLite при полном пересоздании backend-контейнера, наличие volume `/data`, резервные копии.

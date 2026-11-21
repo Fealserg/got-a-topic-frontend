@@ -123,8 +123,11 @@
     "docker": "Not run locally; container checks passed in new GitHub CI"
   },
   "documents_publication": {
-    "confirmed": false,
-    "scope": "Local package ready; cloud disk or GitHub Pages publication is a separate final step"
+    "confirmed": true,
+    "url": "https://fealserg.github.io/got-a-topic-frontend/",
+    "source_branch": "gh-pages",
+    "source_folder": "/",
+    "evidence": "evidence/pages-publication.json"
   },
   "form_submitted": false,
   "video_included": false

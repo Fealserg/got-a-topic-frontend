@@ -13,7 +13,7 @@
 | Swagger через frontend | https://got-a-topic-frontend.isodomain.tech/api/docs |
 | Репозиторий Frontend | https://github.com/Fealserg/got-a-topic-frontend |
 | Репозиторий Backend | https://github.com/Fealserg/got-a-topic-backend |
-| Документы | Публичная ссылка на GitHub Pages или облачную папку с комплектом; публикацию проверить без входа |
+| Документы | https://fealserg.github.io/got-a-topic-frontend/ |
 | Видео | Не подготовлено по поручению пользователя |
 
 ## Единый архив
@@ -22,7 +22,11 @@
 
 Исходники: [frontend-source.zip](../code/frontend-source.zip), [backend-source.zip](../code/backend-source.zip). Их происхождение описано в [release-provenance.json](../evidence/release-provenance.json). Внутри архивов есть README и Dockerfile. Исходники не содержат .env, паролей участников, сессий, SQLite, node_modules и .git. `.env.example` содержит только пример конфигурации.
 
-## Публикация документов
+## Публикация документов подтверждена
+
+[Открыть публичный комплект](https://fealserg.github.io/got-a-topic-frontend/) · [Скачать полный ZIP](https://fealserg.github.io/got-a-topic-frontend/got-a-topic-submission.zip). Проверено без входа: все 20 документов, схемы и архивы отвечают HTTP 200. Свидетельство — [pages-publication.json](../evidence/pages-publication.json).
+
+## Как опубликовать обновление
 
 Загрузить ZIP и распакованный `submission/` в облачную папку с открытым чтением и скачиванием. Проверить доступ без авторизации. Если просмотрщик не исполняет HTML, документы читаются в `sources/`, а навигация работает после скачивания ZIP. Для просмотра прямо в браузере разместить содержимое `submission/` на GitHub Pages; `.nojekyll` уже включён.
 
