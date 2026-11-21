@@ -1,0 +1,50 @@
+{
+  "checked_at_utc": "2026-11-21T09:02:40.325609+00:00",
+  "scope": "Approved scroll-story prototype integrated into Next.js application source",
+  "source_reference": "design-prototypes/scroll-story/story-template.html",
+  "backend_changed": false,
+  "production_deployed": false,
+  "checks": {
+    "proxy_tests": "10 passed",
+    "typescript": "passed",
+    "production_build": "passed",
+    "git_diff_check": "passed",
+    "e2e_discovery": "12 desktop/mobile tests discovered; not executed against a running backend"
+  },
+  "browser_qa": {
+    "mode": "Production build HTML, CSS, JavaScript and image fulfilled in browser memory; API responses are test fixtures, no server socket",
+    "widths": [
+      1440,
+      1024,
+      768,
+      600,
+      390,
+      320
+    ],
+    "anonymous_and_authenticated_overflow": false,
+    "inputs_within_viewport": true,
+    "second_third_fourth_gesture_stops": true,
+    "scroll_driven_progress_checked": 0.5,
+    "animation_frozen_while_idle": true,
+    "keyboard_return_home_y": 0,
+    "reduced_motion_no_pinning": true,
+    "meeting_button_navigates_to_people": true,
+    "registration_opens_profile_at_top": true,
+    "recommendations_render_fixture": true,
+    "invitation_dialog_opens": true,
+    "unsaved_profile_draft_retained_on_cancel": true,
+    "header_navigation_from_workspace": true
+  },
+  "limitations": [
+    "Local Next.js and Uvicorn listeners were denied with EPERM; full frontend/backend E2E could not run.",
+    "Fixture-based UI checks do not establish API or deployed runtime behavior.",
+    "No GitRelax upload, GitHub push or production change performed."
+  ],
+  "screenshots": [
+    "../../.playwright-mcp/app-hero.png",
+    "../../.playwright-mcp/app-story.png",
+    "../../.playwright-mcp/app-people.png",
+    "../../.playwright-mcp/app-create.png",
+    "../../.playwright-mcp/app-profile-mobile.png"
+  ]
+}

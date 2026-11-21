@@ -4,7 +4,7 @@ test('landing is readable and has no horizontal overflow', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading',{name:/Есть что обсудить/})).toBeVisible();
   await page.getByRole('button',{name:'Найти своего собеседника'}).click();
-  await expect(page.getByRole('dialog')).toBeVisible();
+  await expect(page.locator('#ss-create')).toBeInViewport();
   await expect(page.getByLabel('Как вас зовут')).toBeVisible();
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
 });
@@ -27,15 +27,15 @@ test('invite and accept through the real UI and separate user sessions',async({b
       const r=await context.request.put(`${baseURL}/api/me`,{headers,data:{name:`Тест ${i} ${suffix}`,role:'Тестовый участник',company:'E2E',bio:'Автоматическая проверка',wanted:[config.topics[0].id],offered:[config.topics[0].id],availability:[slots[0].id],visible:true}});
       expect(r.ok()).toBe(true);profiles.push({page,context,username,name:`Тест ${i} ${suffix}`});
     }
-    const [a,b]=profiles;await a.page.reload();
+    const [a,b]=profiles;await a.page.reload();await expect(a.page.getByRole('button',{name:'Выйти',exact:true})).toBeVisible();
     const card=a.page.locator('article.person-card').filter({has:a.page.getByRole('heading',{name:b.name,exact:true})});
     await card.getByRole('button',{name:'Пригласить',exact:true}).click();
     await a.page.getByRole('button',{name:'Отправить приглашение'}).click();
     await expect(a.page.getByRole('status')).toContainText('Приглашение отправлено');
-    await b.page.reload();await b.page.getByRole('button',{name:/Мои встречи/}).click();
+    await b.page.reload();await expect(b.page.getByRole('button',{name:'Выйти',exact:true})).toBeVisible();await b.page.getByRole('button',{name:/Мои встречи/}).click();
     await b.page.getByRole('button',{name:'Принять приглашение'}).click();
     await expect(b.page.getByText('Встреча назначена',{exact:true})).toBeVisible();
-    await a.page.reload();await a.page.getByRole('button',{name:/Мои встречи/}).click();
+    await a.page.reload();await expect(a.page.getByRole('button',{name:'Выйти',exact:true})).toBeVisible();await a.page.getByRole('button',{name:/Мои встречи/}).click();
     await expect(a.page.getByText('Встреча назначена',{exact:true})).toBeVisible();
   }finally{
     for(const context of [first,second]){await context.request.delete(`${baseURL}/api/me`,{headers:{'X-Requested-With':'pereryv','Origin':baseURL!}});await context.close();}
@@ -62,6 +62,7 @@ test('unsaved profile changes require confirmation and can be retained',async({p
  try{
   expect((await page.request.post('/api/auth/register',{headers,data:{username,password:'BrowserTest2026!',name:'Проверка черновика'}})).status()).toBe(201);
   await page.reload();
+  await expect(page.getByRole('button',{name:'Выйти',exact:true})).toBeVisible();
   await page.getByRole('button',{name:'Мой профиль',exact:true}).click();
   await page.locator('input[name="name"]').fill('Несохранённое имя');
   page.once('dialog',dialog=>dialog.dismiss());
@@ -75,4 +76,36 @@ test('unsaved profile changes require confirmation and can be retained',async({p
  }finally{
   await page.request.delete('/api/me',{headers});
  }
+});
+
+// Screen boundaries still work with real forms and arbitrarily long recommendation lists.
+test('scroll story stops at screens and footer returns home', async ({ page, isMobile }) => {
+  await page.goto('/');
+  await expect(page.locator('.ss-hero-image img')).toBeVisible();
+  await expect(page.locator('#topic-scroll')).toHaveAttribute('data-transition-enabled', /true|false/);
+  if (!isMobile) {
+    await page.mouse.move(500, 300);
+    await page.mouse.wheel(0, 8000);
+    await expect.poll(() => page.locator('#ss-idea').evaluate(el => Math.round(el.getBoundingClientRect().top))).toBe(0);
+    await page.waitForTimeout(300);
+    await page.mouse.wheel(0, 8000);
+    await expect.poll(() => page.locator('#ss-people').evaluate(el => Math.round(el.getBoundingClientRect().top))).toBe(0);
+  }
+  await page.locator('.ss-navlinks button').click();
+  await expect(page.locator('#ss-create input[name="name"]')).toBeInViewport();
+  await page.locator('.ss-footer-home').click();
+  await expect.poll(() => page.evaluate(() => Math.round(scrollY))).toBe(0);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test('reduced motion keeps the scene and profile form available', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  await expect(page.locator('#topic-scroll')).toHaveAttribute('data-story-pinned', 'false');
+  await page.getByRole('button', { name: 'Как это работает', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Встретимся на перерыве?' })).toBeEnabled();
+  await page.getByRole('button', { name: 'Встретимся на перерыве?' }).click();
+  await expect(page.locator('#ss-people')).toBeInViewport();
+  await page.locator('.ss-navlinks button').click();
+  await expect(page.locator('#ss-create input[name="name"]')).toBeInViewport();
 });

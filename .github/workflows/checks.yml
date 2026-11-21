@@ -74,3 +74,7 @@ jobs:
           done
           docker logs est-tema-web
           exit 1
+      - name: Verify public image in frontend container
+        run: |
+          curl --fail --silent --show-error --output /tmp/conversation-hero.webp http://127.0.0.1:8080/images/conversation-hero.webp
+          cmp frontend/public/images/conversation-hero.webp /tmp/conversation-hero.webp

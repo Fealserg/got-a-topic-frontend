@@ -1,0 +1,18 @@
+{
+  "checked_at_utc": "2026-11-21T09:13:05.282106+00:00",
+  "problem": "Production /images/conversation-hero.webp returned HTTP 404 after design deployment",
+  "cause": "Docker runner stage did not copy public assets",
+  "fix": "COPY --from=build --chown=node:node /app/public ./public",
+  "checks": {
+    "proxy_tests": "10 passed",
+    "typescript": "passed",
+    "production_build": "passed",
+    "git_diff_check": "passed",
+    "public_image_in_source": true,
+    "dockerignore_excludes_public": false,
+    "container_image_check_added_to_ci": true,
+    "container_runtime_check": "not run: Docker CLI unavailable",
+    "fixed_production_deployment": "not performed"
+  },
+  "image_sha256": "24ced6f7df69a81d215cd00550c8ff7e127b9c8a4fa589abb6acd29bb5d61193"
+}
